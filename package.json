@@ -11,6 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "face-api.js": "^0.22.2",
     "socket.io": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "eslint-config-google": "^0.14.0"
   }
 }
