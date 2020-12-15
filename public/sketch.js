@@ -1,51 +1,59 @@
+/* eslint-env browser */
 // Create a new connection using socket.io (imported in index.html)
-let socket = io();
+const socket = io();
+let video;
+const me = new Face();
+const scribble = new Scribble();
+let detection;
+const palette = {
+  neutral: 'gray',
+  happy: 'green',
+  sad: 'blue',
+  angry: 'red',
+  fearful: 'torquoise',
+  disgusted: 'red',
+  surprised: 'orange',
+};
 
-// define the function that will be called on a new newConnection
-socket.on("connect", newConnection);
+async function detectFace() {
+  stroke(20);
+  detection = await faceapi.detectSingleFace(video.elt,
+      new faceapi.TinyFaceDetectorOptions()).
+      withFaceLandmarks().
+      withFaceExpressions();
 
-function newConnection() {
-  console.log("your id:", socket.id);
+  if (!detection) {
+    console.log('no detections');
+    return detectFace();
+  }
+
+  me.expressions = detection.expressions;
+  me.landmarks = detection.landmarks;
+
+  clear();
+
+  stroke(
+      lerpColor(color('white'), color(palette[me.feeling]), me.feelingValue),
+  );
+
+  me.draw();
+
+  textSize(20);
+  text(me.feeling + ', ' + me.feelingValue.toFixed(3), video.width/2, video.height - 20 );
+  return detectFace();
 }
 
-// Define which function should be called when a new message
-// comes from the server with type "mouseBroadcast"
+async function preload() {
+  const MODEL_URL = '/models';
+  await faceapi.loadTinyFaceDetectorModel(MODEL_URL);
+  await faceapi.loadFaceLandmarkModel(MODEL_URL);
+  await faceapi.loadFaceExpressionModel(MODEL_URL);
+}
 
-socket.on("mouseBroadcast", otherMouse);
-
-function setup() {
+async function setup() {
   createCanvas(windowWidth, windowHeight);
-  background("red");
-}
 
-// Callback function called when a new message comes from the server
-// Data parameters will contain the received data
-function otherMouse(data) {
-  console.log("received:", data);
-  noStroke();
-  fill("yellow");
-  ellipse(data.x, data.y, 20);
-}
-
-function mouseDragged() {
-  console.log("sending: ", mouseX, mouseY);
-  noStroke();
-  fill(255);
-
-  // create an object containing the mouse position
-  let message = {
-    x: mouseX,
-    y: mouseY,
-  };
-  // send the object to server,
-  // tag it as "mouse" event
-  socket.emit("mouse", message);
-
-  ellipse(mouseX, mouseY, 20);
-}
-
-function draw() {
-  // evert draw cycle, add a background with low opacity
-  // to create the "fade" effect
-  background(0, 5);
+  video = createCapture(VIDEO, detectFace);
+  video.id();
+  video.hide();
 }

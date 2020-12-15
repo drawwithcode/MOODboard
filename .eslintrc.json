@@ -1,15 +1,23 @@
 {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es2021": true
-    },
-    "extends": [
-        "google"
-    ],
-    "parserOptions": {
-        "ecmaVersion": 11
-    },
-    "rules": {
-    }
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "globals": {
+    "facepi": "readonly"
+  },
+  "plugins": [
+    "p5js"
+  ],
+  "extends": [
+    "google",
+    "plugin:p5js/p5"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 11
+  },
+  "rules": {
+    "require-jsdoc": "off"
+  }
 }

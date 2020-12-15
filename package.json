@@ -4,7 +4,6 @@
   "description": "Simple node app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "author": "Michele Mauri",
@@ -12,10 +11,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "face-api.js": "^0.22.2",
+    "p5": "^1.1.9",
     "socket.io": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^7.15.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-p5js": "^0.2.0"
   }
 }
