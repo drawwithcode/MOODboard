@@ -1,4 +1,4 @@
-# node-and-p5
+# MOODboard
 a simple project using node and p5.js, following this tutorial: https://thecodingtrain.com/Tutorials/12-websockets/
 
 # how to run

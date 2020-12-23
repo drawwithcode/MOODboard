@@ -1,10 +1,30 @@
+/**
+ *
+ *
+ */
 class Face {
-  constructor() {
+  constructor({x, y, feeling} = {}) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(0, 0);
+    this.vel.limit(5);
+    this.acc = createVector(0, 0);
+    this.feeling = feeling;
+    this.feelingValue = 1;
+  }
 
+  stop() {
+    this.vel.set(0, 0);
+  }
+
+  updatePosition() {
+    this.vel.add(this.acc);
+    this.vel.limit(5);
+
+    this.pos.add(this.vel);
+    this.acc.set(0, 0);
   }
 
   set expressions(expressions) {
-    // const {angry, disgusted, fearful, happy, neutral, sad, surprised} = expressions;
     this.feeling = '';
     this.feelingValue = 0;
 
@@ -27,13 +47,34 @@ class Face {
   }
 
   draw() {
-    this._drawElement(this.shape, false);
-    this._drawElement(this.leftEyebrow, false);
-    this._drawElement(this.rightEyebrow, false);
-    this._drawElement(this.nose, false);
-    this._drawElement(this.leftEye);
-    this._drawElement(this.rightEye);
-    this._drawElement(this.mouth);
+    // Se non c'è ancora un feeling associato, non disegnare.
+    if (!this.feeling) {
+      return;
+    }
+
+    const col = palette[this.feeling];
+
+    const lerpedColor = lerpColor(
+        color('white'), // Colore di partenza, se il valore fosse 0.
+        color(col), // Colore se il valore fosse 1.
+        this.feelingValue,
+    );
+
+    stroke(lerpedColor);
+
+    ellipse(this.pos.x, this.pos.y, 20);
+
+    push();
+    translate(this.pos);
+    line(0, 0, this.vel.x, this.vel.y);
+    pop();
+    // this._drawElement(this.shape, false);
+    // this._drawElement(this.leftEyebrow, false);
+    // this._drawElement(this.rightEyebrow, false);
+    // this._drawElement(this.nose, false);
+    // this._drawElement(this.leftEye);
+    // this._drawElement(this.rightEye);
+    // this._drawElement(this.mouth);
   }
 
   _drawElement(points, close = true) {
