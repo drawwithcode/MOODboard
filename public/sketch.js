@@ -88,7 +88,7 @@ function setup() {
   // video = createCapture(VIDEO);
   // video.id();
   // video.hide();
-  players.push(new Face({id: socket.id}));
+  players.push(new Player({id: socket.id}));
 
   me = players[players.length - 1];
 
@@ -103,14 +103,14 @@ function setup() {
     const y = random(height);
     const feel = random(feelings);
 
-    players.push(new Face({x, y, feeling: feel, id: random()}));
+    players.push(new Player({x, y, feeling: feel, id: random()}));
   }
 }
 
 function draw() {
   clear();
 
-  for (const [feeling, gravityPoint] of gravityPoints) {
+  for (const [, gravityPoint] of gravityPoints) {
     gravityPoint.run();
   }
 
@@ -121,16 +121,30 @@ function draw() {
   }
 }
 
-
-function shufflefeelings() {
-  for (const player of players) {
-    player.feeling = random(feelings);
-    player.feelingValue = random();
-  }
-}
+/**
+ * Eseguita ogni volta che la finestra è ridimensionata.
+ */
 function windowResized() {
   // Ricalcolo le posizioni dei focus
   for (const [, gravityPoint] of gravityPoints) {
     gravityPoint.setPosition();
+  }
+}
+
+/**
+ * Riassegna casualmente le espressioni ai players.
+ *
+ * Solo per la fase di sviluppo.
+ *
+ * @param {boolean} auto indica se andare in loop la funzione.
+ */
+function shufflefeelings( auto = true) {
+  for (const player of players) {
+    player.feeling = random(feelings);
+    player.feelingValue = random(.4, 1);
+  }
+
+  if (auto) {
+    setTimeout(random(800, 5000), shufflefeelings);
   }
 }

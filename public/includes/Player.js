@@ -2,7 +2,7 @@
  *
  *
  */
-class Face {
+class Player {
   constructor({x, y, feeling, id} = {}) {
     this.id = id;
     this.pos = createVector(x, y);
@@ -36,7 +36,7 @@ class Face {
 
       let distance = force.mag();
 
-      if (distance < 10 ) return;
+      if (distance < 10) return;
 
       if (distance < 150) distance *= distance;
 
@@ -62,6 +62,27 @@ class Face {
 
     this.pos.add(this.vel);
     this.acc.set(0, 0);
+
+    const bounceReduction = .7;
+
+    if (this.pos.x < 0) {
+      this.vel.mult(bounceReduction);
+      this.vel.reflect(createVector(1, 0));
+      this.pos.x = 0;
+    } else if (this.pos.x > width) {
+      this.vel.mult(bounceReduction);
+      this.vel.reflect(createVector(1, 0));
+      this.pos.x = width;
+    }
+    if (this.pos.y < 0) {
+      this.vel.mult(bounceReduction);
+      this.vel.reflect(createVector(0, 1));
+      this.pos.y = 0;
+    } else if (this.pos.y > height) {
+      this.vel.mult(bounceReduction);
+      this.vel.reflect(createVector(0, 1));
+      this.pos.y = height;
+    }
   }
 
   set expressions(expressions) {
@@ -86,6 +107,10 @@ class Face {
     this.mouth = _positions.slice(48, 68);
   }
 
+  drawPhysicViz() {
+    ellipse(this.pos.x, this.pos.y, 20 * this.feelingValue);
+  }
+
   draw() {
     // Se non c'è ancora un feeling associato, non disegnare.
     if (!this.feeling) {
@@ -104,7 +129,7 @@ class Face {
 
     fill(lerpedColor);
 
-    ellipse(this.pos.x, this.pos.y, 20);
+    this.drawPhysicViz();
 
     // push();
     // translate(this.pos);
