@@ -11,6 +11,10 @@ class Player {
     this.acc = createVector(0, 0);
     this.feeling = feeling;
     this.feelingValue = 1;
+
+    this.dimensions = {
+      h: 0, w: 0,
+    };
   }
 
   stop() {
@@ -21,6 +25,49 @@ class Player {
     this.attract();
     this.updatePosition();
     this.draw();
+  }
+
+  draw() {
+    // Se non c'è ancora un feeling associato, non disegnare.
+    if (!this.feeling) {
+      return;
+    }
+
+    push();
+
+    translate(this.pos);
+
+    translate(-this.dimensions.w / 2, -this.dimensions.h / 2);
+
+    const col = palette[this.feeling];
+
+    const lerpedColor = lerpColor(
+        color('white'), // Colore di partenza, se il valore fosse 0.
+        color(col), // Colore se il valore fosse 1.
+        this.feelingValue,
+    );
+
+    stroke(lerpedColor);
+
+    const faceWidth = 120;
+
+    scale(
+        faceWidth / this.dimensions.w,
+        faceWidth / this.dimensions.w,
+    );
+    // scale(60/this.dimensions.w, this.dimensions.h * 60/ this.dimensions.w);
+    // this.drawPhysicViz();
+
+    rect(0, 0, this.dimensions.w, this.dimensions.h);
+    this._drawElement(this.shape, false);
+    this._drawElement(this.leftEyebrow, false);
+    this._drawElement(this.rightEyebrow, false);
+    this._drawElement(this.nose, false);
+    this._drawElement(this.leftEye);
+    this._drawElement(this.rightEye);
+    this._drawElement(this.mouth);
+
+    pop();
   }
 
   attract() {
@@ -45,6 +92,10 @@ class Player {
 
       other.applyForce(force);
     }
+  }
+
+  broadcast() {
+
   }
 
   /**
@@ -85,65 +136,8 @@ class Player {
     }
   }
 
-  set expressions(expressions) {
-    this.feeling = '';
-    this.feelingValue = 0;
-
-    for (const [feeling, value] of Object.entries(expressions)) {
-      if (value > this.feelingValue) {
-        this.feeling = feeling;
-        this.feelingValue = value;
-      }
-    }
-  }
-
-  set landmarks({_positions}) {
-    this.shape = _positions.slice(0, 17);
-    this.leftEyebrow = _positions.slice(17, 22);
-    this.rightEyebrow = _positions.slice(22, 27);
-    this.nose = _positions.slice(27, 36);
-    this.leftEye = _positions.slice(36, 42);
-    this.rightEye = _positions.slice(42, 48);
-    this.mouth = _positions.slice(48, 68);
-  }
-
   drawPhysicViz() {
     ellipse(this.pos.x, this.pos.y, 20 * this.feelingValue);
-  }
-
-  draw() {
-    // Se non c'è ancora un feeling associato, non disegnare.
-    if (!this.feeling) {
-      return;
-    }
-
-    push();
-
-    const col = palette[this.feeling];
-
-    const lerpedColor = lerpColor(
-        color('white'), // Colore di partenza, se il valore fosse 0.
-        color(col), // Colore se il valore fosse 1.
-        this.feelingValue,
-    );
-
-    fill(lerpedColor);
-
-    this.drawPhysicViz();
-
-    // push();
-    // translate(this.pos);
-    // line(0, 0, this.vel.x, this.vel.y);
-    // pop();
-    // this._drawElement(this.shape, false);
-    // this._drawElement(this.leftEyebrow, false);
-    // this._drawElement(this.rightEyebrow, false);
-    // this._drawElement(this.nose, false);
-    // this._drawElement(this.leftEye);
-    // this._drawElement(this.rightEye);
-    // this._drawElement(this.mouth);
-
-    pop();
   }
 
   _drawElement(points, close = true) {
@@ -156,6 +150,44 @@ class Player {
         points[0]._x, points[0]._y,
         points[points.length - 1]._x, points[points.length - 1]._y,
     );
+  }
+
+  set detection(detection) {
+    this.landmarks = detection.unshiftedLandmarks;
+    this.expressions = detection.expressions;
+  }
+
+  set expressions(expressions) {
+    this.feeling = '';
+    this.feelingValue = 0;
+
+    for (const [feeling, value] of Object.entries(expressions)) {
+      /**
+       * Cerchiamo di diminuire i neutral, favorendo le altre espressioni
+       */
+      const v = feeling === 'neutral' ? value * .7 : value;
+
+      if (v > this.feelingValue) {
+        this.feeling = feeling;
+        this.feelingValue = value;
+      }
+    }
+
+    if (DEBUG_MODE) {
+      DEBUG.expressions.push([this.feeling, this.feelingValue]);
+    }
+  }
+
+  set landmarks({_positions, _imgDims: {_height, _width}}) {
+    this.dimensions = {h: _height, w: _width};
+
+    this.shape = _positions.slice(0, 17);
+    this.leftEyebrow = _positions.slice(17, 22);
+    this.rightEyebrow = _positions.slice(22, 27);
+    this.nose = _positions.slice(27, 36);
+    this.leftEye = _positions.slice(36, 42);
+    this.rightEye = _positions.slice(42, 48);
+    this.mouth = _positions.slice(48, 68);
   }
 }
 

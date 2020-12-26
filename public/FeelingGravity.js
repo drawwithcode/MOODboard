@@ -1,7 +1,7 @@
 /**
  * Questa classe genera i centri di gravità delle emozioni.
  */
-class Focus {
+class FeelingGravity {
   constructor({feeling}) {
     this.feeling = feeling;
     this.setPosition();
@@ -23,7 +23,7 @@ class Focus {
       const distance = force.mag();
 
       if (distance > 10) {
-        force.setMag(G * other.feelingValue * 20 / pow(distance, 2));
+        force.setMag(G * other.feelingValue * 40 / pow(distance, 2));
         other.acc.add(force);
       } else other.stop();
     }
