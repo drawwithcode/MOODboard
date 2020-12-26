@@ -1,27 +1,36 @@
 /* eslint-env browser */
 // Create a new connection using socket.io (immported in index.html)
-
 const socket = io();
-
 let video;
+let me;
+const players = [];
+const scribble = new Scribble();
+
+/**
+ * Costante di attrazione gravitazionale.
+ *
+ * In natura equivale a 6.67E-11
+ * @type {number}
+ */
+const G = 66;
 
 const detectionOptions = new faceapi.TinyFaceDetectorOptions();
 
-let me;
-const players = [];
-
-const scribble = new Scribble();
-
 let detection;
 
+/**
+ * Palette delle emozioni
+ *
+ * @type {{string}}
+ */
 const palette = {
   neutral: 'gray',
   happy: 'green',
   sad: 'blue',
   angry: 'red',
-  fearful: 'torquoise',
+  fearful: 'aqua',
   disgusted: 'red',
-  surprised: 'orange',
+  surprised: 'brown',
 };
 
 // neutral, happy, sad, angry, fearful, disgusted, surprised
@@ -79,20 +88,22 @@ function setup() {
   // video = createCapture(VIDEO);
   // video.id();
   // video.hide();
+  players.push(new Face({id: socket.id}));
 
-  me = new Face();
+  me = players[players.length - 1];
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
     gravityPoints.set(feeling, new Focus({feeling: feeling}));
   }
 
-  for (let i = 0; i < 30; i++) {
+  const count = random(15, 30);
+  for (let i = 0; i < count; i++) {
     const x = random(width);
     const y = random(height);
     const feel = random(feelings);
 
-    players.push(new Face({x, y, feeling: feel}));
+    players.push(new Face({x, y, feeling: feel, id: random()}));
   }
 }
 
@@ -101,23 +112,25 @@ function draw() {
 
   for (const [feeling, gravityPoint] of gravityPoints) {
     gravityPoint.run();
-    gravityPoint.draw();
   }
 
   for (const player of players) {
     push();
-    player.updatePosition();
-    player.draw();
+    player.run();
     pop();
   }
 }
 
+
+function shufflefeelings() {
+  for (const player of players) {
+    player.feeling = random(feelings);
+    player.feelingValue = random();
+  }
+}
 function windowResized() {
   // Ricalcolo le posizioni dei focus
   for (const [, gravityPoint] of gravityPoints) {
     gravityPoint.setPosition();
   }
 }
-
-window.palette = palette;
-window.feelings = feelings;

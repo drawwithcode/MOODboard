@@ -11,20 +11,21 @@ class Focus {
     /**
      * The players with same feeling.
      */
-    const filteredPlayers = players.filter(function(p) {
-      return p.feeling === this.feeling;
-    }, this);
+    const filteredPlayers = players.filter((p) => p.feeling === this.feeling);
 
-    /**
-     * Apply force to each player
-     */
-    for (const filteredPlayer of filteredPlayers) {
-      const distance = dist(filteredPlayer.pos.x, filteredPlayer.pos.y,
-          this.pos.x, this.pos.y);
+    for (const other of filteredPlayers) {
+      /**
+       *
+       * @type {p5.Vector} force
+       */
+      const force = p5.Vector.sub(this.pos, other.pos);
+
+      const distance = force.mag();
+
       if (distance > 10) {
-        const force = p5.Vector.sub(this.pos, filteredPlayer.pos);
-        filteredPlayer.acc.add(force);
-      } else filteredPlayer.stop();
+        force.setMag(G * other.feelingValue * 20 / pow(distance, 2));
+        other.acc.add(force);
+      } else other.stop();
     }
   }
 
