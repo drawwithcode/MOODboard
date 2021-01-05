@@ -11,7 +11,11 @@ class FeelingGravity {
     /**
      * The players with same feeling.
      */
-    const filteredPlayers = players.filter((p) => p.feeling === this.feeling);
+    const filteredPlayers = [];
+
+    for (const [, player] of players) {
+      player.feeling === this.feeling && filteredPlayers.push(player);
+    }
 
     for (const other of filteredPlayers) {
       /**
@@ -27,12 +31,16 @@ class FeelingGravity {
         other.acc.add(force);
       } else other.stop();
     }
+
+    this.draw();
   }
 
   draw() {
     push();
     fill(palette[this.feeling]);
     ellipse(this.pos.x, this.pos.y, 20);
+    textAlign(CENTER);
+    text(this.feeling, this.pos.x, this.pos.y +20);
     pop();
   }
 

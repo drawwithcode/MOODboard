@@ -2,6 +2,7 @@
 // Create a new connection using socket.io (immported in index.html)
 const socket = io();
 let video;
+const detecting = false;
 /**
  * L'istanza di Player che rappresente il giocatore presente.
  *
@@ -10,9 +11,9 @@ let video;
 let me;
 /**
  * Tutti i giocatori presenti.
- * @type {Player[]}
+ * @type {Map<string, Player>}
  */
-const players = [];
+const players = new Map;
 const scribble = new Scribble();
 
 const DEBUG_MODE = true;
@@ -57,7 +58,7 @@ const feelings = Object.keys(palette);
 
 /**
  * These are the points in
- * @type {Map<string, Focus>}
+ * @type {Map<string, FeelingGravity>}
  */
 const gravityPoints = new Map();
 
@@ -66,11 +67,14 @@ async function preload() {
   const MODEL_URL = '/models';
 
   await faceapi.loadTinyFaceDetectorModel(MODEL_URL);
+  console.log('expre');
   await faceapi.loadFaceExpressionModel(MODEL_URL);
   await faceapi.loadFaceLandmarkModel(MODEL_URL);
 
+  document.getElementById('start').disabled = false;
   console.debug('Models loaded');
 }
+
 
 /**
  * Esegue il riconoscimento facciale.
@@ -80,7 +84,7 @@ async function preload() {
  * @return {Promise<*|undefined>}
  */
 async function detectFace() {
-  if (video?.elt) {
+  if (video?.elt && me) {
     detection = await faceapi.detectSingleFace(video.elt,
         detectionOptions).
         withFaceLandmarks().
@@ -88,6 +92,8 @@ async function detectFace() {
 
     if (detection) {
       me.detection = detection;
+
+      me.broadcast();
 
       /**
        * Mostriamo alcuni dati sull'espressione rilevata
@@ -103,23 +109,22 @@ async function detectFace() {
   } else { // La cam non è attiva.
 
   }
+
   return detectFace();
 }
 
-function setup() {
+function start() {
   createCanvas(windowWidth, windowHeight);
 
   video = createCapture(VIDEO, detectFace);
   video.hide();
 
-  players.push(new Player({id: socket.id, x: width / 2, y: height / 2}));
-
-  me = players[players.length - 1];
-
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
     gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
   }
+
+  loop();
 
   // const count = random(15, 30);
   // for (let i = 0; i < count; i++) {
@@ -131,6 +136,10 @@ function setup() {
   // }
 }
 
+function setup() {
+  noLoop();
+}
+
 function draw() {
   clear();
 
@@ -138,7 +147,7 @@ function draw() {
     gravityPoint.run();
   }
 
-  for (const player of players) {
+  for (const [, player] of players) {
     player.run();
   }
 }
@@ -170,3 +179,42 @@ function shufflefeelings(auto = true) {
     setTimeout(random(800, 5000), shufflefeelings);
   }
 }
+
+function onPlayerJoined(id) {
+  console.debug('Player joined');
+  players.set(id, new Player({id}));
+}
+
+function onPlayerUpdated(id, feelings, landmarks, dimensions) {
+  if (!players.has(id)) {
+    players.set(id, new Player({id}));
+  }
+
+  const player = players.get(id);
+
+  player.expressions = feelings;
+
+  // Fingiamo che sia un input di faceapi
+  player.landmarks = {
+    _positions: landmarks,
+    _imgDims: {_height: dimensions.h, _width: dimensions.w},
+  };
+}
+
+function onPlayerLeft(id) {
+  console.debug('Player left');
+
+  players.delete(id);
+}
+
+socket.on('connect', function() {
+  console.log('I am connected', socket.id);
+  players.set(socket.id,
+      new Player({id: socket.id, x: width / 2, y: height / 2}));
+
+  me = players.get(socket.id);
+} );
+
+socket.on('player.joined', onPlayerJoined);
+socket.on('player.updated', onPlayerUpdated);
+socket.on('player.left', onPlayerLeft);

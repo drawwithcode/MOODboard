@@ -26,16 +26,16 @@ function newConnection(socket) {
   // when a new connection is created, print its id
   console.log('socket:', socket.id);
 
-  // define what to do on different kind of messages
-  socket.on('mouse', mouseMessage);
+  socket.broadcast.emit('player.joined', socket.id);
 
-  // create the mouseMessage function
-  function mouseMessage(data) {
-    // send the data to all the other clients
-    socket.broadcast.emit('mouseBroadcast', data);
-    // log the sent data
-    console.log(socket.id, data);
-  }
+  socket.on('player.updated', function(...args) {
+    console.log('Player updated');
+    socket.broadcast.emit('player.updated', socket.id, ...args);
+  });
+
+  socket.on('disconnect', function() {
+    socket.broadcast.emit('player.left', socket.id);
+  });
 }
 
-console.log('node server is running');
+console.log('Server is running.');

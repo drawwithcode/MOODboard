@@ -58,8 +58,9 @@ class Player {
     // scale(60/this.dimensions.w, this.dimensions.h * 60/ this.dimensions.w);
     // this.drawPhysicViz();
 
+    noFill();
     rect(0, 0, this.dimensions.w, this.dimensions.h);
-    this._drawElement(this.shape, false);
+    this._drawElement(this.jaw, false);
     this._drawElement(this.leftEyebrow, false);
     this._drawElement(this.rightEyebrow, false);
     this._drawElement(this.nose, false);
@@ -71,10 +72,11 @@ class Player {
   }
 
   attract() {
-    const others = players.filter(
-        (p) => p.feeling === this.feeling && p.id !== this.id);
+    players.forEach((other) => {
+      if (other.feeling !== this.feeling || other.id === this.id) {
+        return;
+      }
 
-    for (const other of others) {
       /**
        *
        * @type {p5.Vector} force
@@ -91,11 +93,12 @@ class Player {
           G * this.feelingValue * other.feelingValue / pow(distance, 2));
 
       other.applyForce(force);
-    }
+    });
   }
 
   broadcast() {
-
+    socket.emit('player.updated', this.feelings, this._landmarks,
+        this.dimensions);
   }
 
   /**
@@ -114,7 +117,7 @@ class Player {
     this.pos.add(this.vel);
     this.acc.set(0, 0);
 
-    const bounceReduction = .7;
+    const bounceReduction = .6;
 
     if (this.pos.x < 0) {
       this.vel.mult(bounceReduction);
@@ -158,6 +161,8 @@ class Player {
   }
 
   set expressions(expressions) {
+    this.feelings = expressions;
+
     this.feeling = '';
     this.feelingValue = 0;
 
@@ -174,14 +179,15 @@ class Player {
     }
 
     if (DEBUG_MODE) {
-      DEBUG.expressions.push([this.feeling, this.feelingValue]);
+      DEBUG.expressions.push([this.feeling, this.feelingValue, expressions]);
     }
   }
 
   set landmarks({_positions, _imgDims: {_height, _width}}) {
+    this._landmarks = _positions;
     this.dimensions = {h: _height, w: _width};
 
-    this.shape = _positions.slice(0, 17);
+    this.jaw = _positions.slice(0, 17);
     this.leftEyebrow = _positions.slice(17, 22);
     this.rightEyebrow = _positions.slice(22, 27);
     this.nose = _positions.slice(27, 36);

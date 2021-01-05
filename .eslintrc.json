@@ -1,8 +1,7 @@
 {
   "env": {
     "browser": true,
-    "commonjs": true,
-    "es2021": true
+    "commonjs": true
   },
   "globals": {
     "facepi": "readonly"
