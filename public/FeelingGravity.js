@@ -33,7 +33,7 @@ class FeelingGravity {
       } else other.stop();
     }
 
-    this.draw();
+    if (DEBUG_MODE) this.draw();
   }
 
   draw() {
@@ -41,7 +41,7 @@ class FeelingGravity {
     fill(palette[this.feeling]);
     ellipse(this.pos.x, this.pos.y, 20);
     textAlign(CENTER);
-    text(this.feeling, this.pos.x, this.pos.y +20);
+    text(this.feeling, this.pos.x, this.pos.y + 20);
     pop();
   }
 

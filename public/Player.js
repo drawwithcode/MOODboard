@@ -72,7 +72,7 @@ class Player {
       textAlign(CENTER);
       textSize(40);
       text(this.feeling + ' ' + this.feelingValue.toFixed(2),
-          this.dimensions.w, this.dimensions.h + 20);
+          this.dimensions.w/2, this.dimensions.h + 20);
     }
 
     pop();
