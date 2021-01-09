@@ -180,7 +180,7 @@ class Player {
       /**
        * Cerchiamo di diminuire i neutral, favorendo le altre espressioni
        */
-      const v = feeling === 'neutral' ? value * .7 : value;
+      const v = feeling === 'neutral' ? value * .6 : value;
 
       if (v > this.feelingValue) {
         this.feeling = feeling;

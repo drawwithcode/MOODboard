@@ -16,7 +16,8 @@ let me;
 const players = new Map;
 const scribble = new Scribble();
 
-const DEBUG_MODE = true;
+// eslint-disable-next-line prefer-const
+let DEBUG_MODE = false;
 
 /**
  *
@@ -90,7 +91,7 @@ async function detectFace() {
       const score = detection.detection._score;
 
       if (score < threshold) {
-        console.debug('Invalid detection.');
+        DEBUG_MODE && console.debug('Uncertain detection');
         return detectFace();
       }
       me.detection = detection;
@@ -105,8 +106,8 @@ async function detectFace() {
       // textSize(20);
       // text(me.feeling + ', ' + me.feelingValue.toFixed(3), video.width / 2,
       //     video.height - 20);
-    } else {
-      // No face detected
+    } else { // Nessuna rilevazione.
+      // DEBUG_MODE && console.warn('Invalid detection');
     }
   } else { // La cam non è attiva.
     console.error('Il permesso non è stato dato');
