@@ -77,6 +77,22 @@ async function detectFace() {
         withFaceExpressions();
 
     if (detection) {
+      /**
+       * Grado di certezza affinché la rilevazione sia valida.
+       *
+       * Se face-api.js trova un volto ma ha un grando di certezza inferiore al
+       * valore di threshold, la rilevazione ricomincia.
+       *
+       * @type {number}
+       */
+      const threshold = .8;
+
+      const score = detection.detection._score;
+
+      if (score < threshold) {
+        console.debug('Invalid detection.');
+        return detectFace();
+      }
       me.detection = detection;
 
       me.broadcast();
@@ -93,7 +109,7 @@ async function detectFace() {
       // No face detected
     }
   } else { // La cam non è attiva.
-
+    console.error('Il permesso non è stato dato');
   }
 
   return detectFace();
@@ -103,6 +119,9 @@ async function detectFace() {
  * Funzione chiamata dal <button>
  */
 function start() {
+  const detectionButton = document.getElementById('start');
+  detectionButton.remove();
+  detectFace();
   loop();
 }
 
@@ -126,7 +145,6 @@ async function setup() {
 
   video = createCapture(VIDEO, function() {
     document.getElementById('start').disabled = false;
-    detectFace();
   });
 
   video.hide();
