@@ -27,7 +27,8 @@ class FeelingGravity {
       const distance = force.mag();
 
       if (distance > 10) {
-        force.setMag(G * other.feelingValue * 40 / pow(distance, 2));
+        // Dovrebbe essere distanza alla seconda, ma poi fa movimenti non voluti
+        force.setMag(G * other.feelingValue * 40 / distance);
         other.acc.add(force);
       } else other.stop();
     }

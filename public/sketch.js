@@ -62,20 +62,6 @@ const feelings = Object.keys(palette);
  */
 const gravityPoints = new Map();
 
-async function preload() {
-  // Loads facepi models
-  const MODEL_URL = '/models';
-
-  await faceapi.loadTinyFaceDetectorModel(MODEL_URL);
-  console.log('expre');
-  await faceapi.loadFaceExpressionModel(MODEL_URL);
-  await faceapi.loadFaceLandmarkModel(MODEL_URL);
-
-  document.getElementById('start').disabled = false;
-  console.debug('Models loaded');
-}
-
-
 /**
  * Esegue il riconoscimento facciale.
  *
@@ -113,31 +99,37 @@ async function detectFace() {
   return detectFace();
 }
 
+/**
+ * Funzione chiamata dal <button>
+ */
 function start() {
+  loop();
+}
+
+async function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  video = createCapture(VIDEO, detectFace);
-  video.hide();
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
     gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
   }
 
-  loop();
-
-  // const count = random(15, 30);
-  // for (let i = 0; i < count; i++) {
-  //   const x = random(width);
-  //   const y = random(height);
-  //   const feel = random(feelings);
-  //
-  //   players.push(new Player({x, y, feeling: feel, id: random()}));
-  // }
-}
-
-function setup() {
   noLoop();
+
+  // Loads facepi models
+  const MODEL_URL = '/models';
+
+  await faceapi.loadTinyFaceDetectorModel(MODEL_URL);
+  await faceapi.loadFaceExpressionModel(MODEL_URL);
+  await faceapi.loadFaceLandmarkModel(MODEL_URL);
+
+  video = createCapture(VIDEO, function() {
+    document.getElementById('start').disabled = false;
+    detectFace();
+  });
+
+  video.hide();
 }
 
 function draw() {
@@ -213,7 +205,7 @@ socket.on('connect', function() {
       new Player({id: socket.id, x: width / 2, y: height / 2}));
 
   me = players.get(socket.id);
-} );
+});
 
 socket.on('player.joined', onPlayerJoined);
 socket.on('player.updated', onPlayerUpdated);

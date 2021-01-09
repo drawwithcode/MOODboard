@@ -29,7 +29,6 @@ function newConnection(socket) {
   socket.broadcast.emit('player.joined', socket.id);
 
   socket.on('player.updated', function(...args) {
-    console.log('Player updated');
     socket.broadcast.emit('player.updated', socket.id, ...args);
   });
 
@@ -38,4 +37,7 @@ function newConnection(socket) {
   });
 }
 
-console.log('Server is running.');
+console.log('Server is running.\n' +
+    'Check out at http://localhost:' +
+    port +
+    '/ ');

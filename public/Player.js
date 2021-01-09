@@ -59,7 +59,7 @@ class Player {
     // this.drawPhysicViz();
 
     noFill();
-    rect(0, 0, this.dimensions.w, this.dimensions.h);
+    // rect(0, 0, this.dimensions.w, this.dimensions.h);
     this._drawElement(this.jaw, false);
     this._drawElement(this.leftEyebrow, false);
     this._drawElement(this.rightEyebrow, false);
@@ -67,6 +67,13 @@ class Player {
     this._drawElement(this.leftEye);
     this._drawElement(this.rightEye);
     this._drawElement(this.mouth);
+
+    if (DEBUG_MODE) {
+      textAlign(CENTER);
+      textSize(40);
+      text(this.feeling + ' ' + this.feelingValue.toFixed(2),
+          this.dimensions.w, this.dimensions.h + 20);
+    }
 
     pop();
   }
@@ -89,6 +96,9 @@ class Player {
 
       if (distance < 150) distance *= distance;
 
+      /**
+       * @todo decidere se lasciare diviso distance^2
+       */
       force.setMag(
           G * this.feelingValue * other.feelingValue / pow(distance, 2));
 
