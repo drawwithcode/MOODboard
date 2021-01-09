@@ -1,4 +1,3 @@
-/* eslint-env browser */
 // Create a new connection using socket.io (immported in index.html)
 const socket = io();
 let video;
@@ -20,7 +19,7 @@ const scribble = new Scribble();
 let DEBUG_MODE = false;
 
 /**
- *
+ * Qui si accumulano un po' di dati per il debug.
  * @type {{expressions: [string[]]}}
  */
 const DEBUG = {
@@ -123,7 +122,6 @@ function start() {
   const detectionButton = document.getElementById('start');
   detectionButton.remove();
   detectFace();
-  loop();
 }
 
 async function setup() {
@@ -134,8 +132,6 @@ async function setup() {
   for (const feeling of feelings) {
     gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
   }
-
-  noLoop();
 
   // Loads facepi models
   const MODEL_URL = '/models';
@@ -192,8 +188,8 @@ function shufflefeelings(auto = true) {
 }
 
 function onPlayerJoined(id) {
-  console.debug('Player joined');
-  players.set(id, new Player({id}));
+  console.info('Player joined');
+  players.set(id, new Player({id, x: width/2, y: height/2}));
 }
 
 function onPlayerUpdated(id, feelings, landmarks, dimensions) {
@@ -213,13 +209,12 @@ function onPlayerUpdated(id, feelings, landmarks, dimensions) {
 }
 
 function onPlayerLeft(id) {
-  console.debug('Player left');
-
+  console.info('Player ' + id + ' left');
   players.delete(id);
 }
 
 socket.on('connect', function() {
-  console.log('I am connected', socket.id);
+  console.info('You are now connected. Your ID is ' + socket.id);
   players.set(socket.id,
       new Player({id: socket.id, x: width / 2, y: height / 2}));
 
