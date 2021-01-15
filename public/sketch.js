@@ -120,6 +120,8 @@ async function detectFace() {
  */
 function start() {
   const detectionButton = document.getElementById('start');
+  const detectionButton2 = document.getElementById('start2');
+  detectionButton2.remove();
   detectionButton.remove();
   detectFace();
 }
