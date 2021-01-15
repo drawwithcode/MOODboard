@@ -72,9 +72,7 @@ const gravityPoints = new Map();
 async function detectFace() {
   if (video?.elt && me) {
     detection = await faceapi.detectSingleFace(video.elt,
-        detectionOptions).
-        withFaceLandmarks().
-        withFaceExpressions();
+        detectionOptions).withFaceLandmarks().withFaceExpressions();
 
     if (detection) {
       /**
@@ -119,16 +117,13 @@ async function detectFace() {
  * Funzione chiamata dal <button>
  */
 function start() {
-  const detectionButton = document.getElementById('start');
-  const detectionButton2 = document.getElementById('start2');
-  detectionButton2.remove();
+  const detectionButton = document.getElementById('start2');
   detectionButton.remove();
   detectFace();
 }
 
 async function setup() {
   createCanvas(windowWidth, windowHeight);
-
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
@@ -191,7 +186,7 @@ function shufflefeelings(auto = true) {
 
 function onPlayerJoined(id) {
   console.info('Player joined');
-  players.set(id, new Player({id, x: width/2, y: height/2}));
+  players.set(id, new Player({id, x: width / 2, y: height / 2}));
 }
 
 function onPlayerUpdated(id, feelings, landmarks, dimensions) {
