@@ -1,0 +1,51 @@
+@font-face {
+    font-family: Karrik-reg;
+    src: url('../font/Karrik-Regular.woff') format('woff'),
+    url('../font/Karrik-Regular.woff2') format('woff2')
+}
+
+
+html {
+    --color-main: #C4C4C4;
+    --font-main-reg: Karrik-reg;
+    --font-size-header: 30px;
+    --font-size-welcome:60px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+p {
+    text-align: center;
+    margin-bottom:0rem;
+    font-family: var(--font-main-reg);
+    font-size: var(--font-size-welcome);
+    line-height: 60px;
+}
+
+.startContainer {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu {
+    font-family: var(--font-main-reg);
+    font-size: var(--font-size-header);
+    cursor: pointer;
+}
+
+.start {
+    background-color: var(--color-main);
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top:15px;
+    padding-bottom:15px;
+    border-radius: 20px;
+    font-size: var(--font-size-header);
+    cursor: pointer;
+}
