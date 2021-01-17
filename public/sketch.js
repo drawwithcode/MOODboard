@@ -70,45 +70,49 @@ const gravityPoints = new Map();
  * @return {Promise<*|undefined>}
  */
 async function detectFace() {
-  if (video?.elt && me) {
-    detection = await faceapi.detectSingleFace(video.elt,
-        detectionOptions).withFaceLandmarks().withFaceExpressions();
+  if (!me) {
+    console.warn('Probabilmente non c\'è ancora una connessione al server. Riproverò fra un secondo.');
+    return setTimeout(detectFace, 500);
+  } else if (!video) { // La cam non è attiva.
+    console.warn('Probabilmente il permesso della webcam non è ancora stato concesso. Riproverò fra un secondo.');
+    return setTimeout(detectFace, 1000);
+  }
 
-    if (detection) {
-      /**
-       * Grado di certezza affinché la rilevazione sia valida.
-       *
-       * Se face-api.js trova un volto ma ha un grando di certezza inferiore al
-       * valore di threshold, la rilevazione ricomincia.
-       *
-       * @type {number}
-       */
-      const threshold = .8;
+  detection = await faceapi.detectSingleFace(video.elt,
+      detectionOptions).withFaceLandmarks().withFaceExpressions();
 
-      const score = detection.detection._score;
+  if (detection) {
+    /**
+     * Grado di certezza affinché la rilevazione sia valida.
+     *
+     * Se face-api.js trova un volto ma ha un grando di certezza inferiore al
+     * valore di threshold, la rilevazione ricomincia.
+     *
+     * @type {number}
+     */
+    const threshold = .8;
 
-      if (score < threshold) {
-        DEBUG_MODE && console.debug('Uncertain detection');
-        return detectFace();
-      }
+    const score = detection.detection._score;
 
-      me.detection = detection;
-
-      me.broadcast();
-
-      /**
-       * Mostriamo alcuni dati sull'espressione rilevata
-       *
-       * @todo cancellare quando non servirà
-       */
-      // textSize(20);
-      // text(me.feeling + ', ' + me.feelingValue.toFixed(3), video.width / 2,
-      //     video.height - 20);
-    } else { // Nessuna rilevazione.
-      // DEBUG_MODE && console.warn('Invalid detection');
+    if (score < threshold) {
+      DEBUG_MODE && console.debug('Uncertain detection');
+      return detectFace();
     }
-  } else { // La cam non è attiva.
-    console.error('Il permesso non è stato dato');
+
+    me.detection = detection;
+
+    me.broadcast();
+
+    /**
+     * Mostriamo alcuni dati sull'espressione rilevata
+     *
+     * @todo cancellare quando non servirà
+     */
+    // textSize(20);
+    // text(me.feeling + ', ' + me.feelingValue.toFixed(3), video.width / 2,
+    //     video.height - 20);
+  } else { // Nessuna rilevazione.
+    // DEBUG_MODE && console.warn('Invalid detection');
   }
 
   return detectFace();
@@ -140,9 +144,18 @@ async function setup() {
 
   video = createCapture(VIDEO, function() {
     document.getElementById('start').disabled = false;
+    DEBUG_MODE && console.debug('Video is ready.');
   });
 
   video.hide();
+
+
+  if (typeof socket.id !== 'undefined') {
+    players.set(socket.id,
+        new Player({id: socket.id, x: width / 2, y: height / 2}));
+
+    me = players.get(socket.id);
+  }
 }
 
 function draw() {
@@ -161,6 +174,7 @@ function draw() {
  * Eseguita ogni volta che la finestra è ridimensionata.
  */
 function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
   // Ricalcolo le posizioni dei focus
   for (const [, gravityPoint] of gravityPoints) {
     gravityPoint.setPosition();
@@ -183,11 +197,6 @@ function shufflefeelings(auto = true) {
   if (auto) {
     setTimeout(random(800, 5000), shufflefeelings);
   }
-}
-
-function onPlayerJoined(id) {
-  console.info('Player joined');
-  players.set(id, new Player({id, x: width / 2, y: height / 2}));
 }
 
 function onPlayerUpdated(id, feelings, landmarks, dimensions) {
@@ -213,12 +222,14 @@ function onPlayerLeft(id) {
 
 socket.on('connect', function() {
   console.info('You are now connected. Your ID is ' + socket.id);
-  players.set(socket.id,
-      new Player({id: socket.id, x: width / 2, y: height / 2}));
 
-  me = players.get(socket.id);
+  if (typeof width !== 'undefined') {
+    players.set(socket.id,
+        new Player({id: socket.id, x: width / 2, y: height / 2}));
+
+    me = players.get(socket.id);
+  }
 });
 
-socket.on('player.joined', onPlayerJoined);
 socket.on('player.updated', onPlayerUpdated);
 socket.on('player.left', onPlayerLeft);

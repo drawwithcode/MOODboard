@@ -1,22 +1,23 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true
-  },
-  "globals": {
-    "facepi": "readonly"
-  },
-  "plugins": [
-    "p5js"
-  ],
-  "extends": [
-    "google",
-    "plugin:p5js/p5"
-  ],
-  "parserOptions": {
-    "ecmaVersion": 11
-  },
-  "rules": {
-    "require-jsdoc": "off"
-  }
+    "env": {
+        "browser": true,
+        "commonjs": true
+    },
+    "globals": {
+        "facepi": "readonly"
+    },
+    "plugins": [
+        "p5js"
+    ],
+    "extends": [
+        "google",
+        "plugin:p5js/p5"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 11
+    },
+    "rules": {
+        "require-jsdoc": "off",
+        "max-len": "off"
+    }
 }

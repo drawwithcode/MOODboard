@@ -23,9 +23,7 @@ io.on('connection', newConnection);
 // will contain all the information on the new connection
 function newConnection(socket) {
   // when a new connection is created, print its id
-  console.log('socket:', socket.id);
-
-  socket.broadcast.emit('player.joined', socket.id);
+  console.log('New socket. Id: ', socket.id);
 
   socket.on('player.updated', function(...args) {
     socket.broadcast.emit('player.updated', socket.id, ...args);
