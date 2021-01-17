@@ -16,7 +16,7 @@ const players = new Map;
 const scribble = new Scribble();
 
 // eslint-disable-next-line prefer-const
-let DEBUG_MODE = false;
+let DEBUG_MODE = true;
 
 /**
  * Qui si accumulano un po' di dati per il debug.
@@ -91,6 +91,7 @@ async function detectFace() {
         DEBUG_MODE && console.debug('Uncertain detection');
         return detectFace();
       }
+
       me.detection = detection;
 
       me.broadcast();
