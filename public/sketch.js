@@ -167,11 +167,28 @@ async function setup() {
 
     me = players.get(socket.id);
   }
+
+  setInterval(function() {
+    const summedFeeling = {
+      neutral: 0, happy: 0, sad: 0, angry: 0, fearful: 0, disgusted: 0, surprised: 0,
+    };
+
+    for (const [, player] of players) {
+      if (player.feelings) {
+        for (const [f, value] of Object.entries(player.feelings)) {
+          summedFeeling[f] += value;
+        }
+      }
+    }
+
+    for (const [f, v] of Object.entries(summedFeeling)) {
+      bgShader.setUniform(f, v);
+    }
+  }, 400);
 }
 
 function draw() {
   const mm = mouseX / 100;
-  console.log(mm);
 
   bg.shader(bgShader);
 
@@ -181,21 +198,8 @@ function draw() {
     gravityPoint.run();
   }
 
-  const summedFeeling = {
-    neutral: 0, happy: 0, sad: 0, angry: 0, fearful: 0, disgusted: 0, surprised: 0,
-  };
   for (const [, player] of players) {
     player.run();
-
-    if (player.feelings) {
-      for (const [f, value] of Object.entries(player.feelings)) {
-        summedFeeling[f] += value;
-      }
-    }
-  }
-
-  for (const [f, v] of Object.entries(summedFeeling)) {
-    bgShader.setUniform(f, v);
   }
 
   bgShader.setUniform('resolution', [width, height]);
