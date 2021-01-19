@@ -37,7 +37,15 @@ p {
     border-radius: 40px;
 }
 
+/*.carousel-item {
+  width: 1000px;
+  height: 400px;
+}*/
 
+.ww {width: 1000px;
+  height: 400px;
+
+}
 
 
 .menu {
