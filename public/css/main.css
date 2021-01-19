@@ -9,7 +9,7 @@ html {
     --color-main: #C4C4C4;
     --font-main-reg: Karrik-reg;
     --font-size-header: 30px;
-    --font-size-welcome:60px;
+    --font-size-welcome:30px;
 }
 
 body {
@@ -23,15 +23,17 @@ p {
     margin-bottom:0;
     font-family: var(--font-main-reg);
     font-size: var(--font-size-welcome);
-    line-height: 60px;
+    line-height: 30px;
 }
 
-.startContainer {
+ .startContainer {
     position: absolute;
     top:50%;
     left:50%;
     transform: translate(-50%, -50%);
 }
+
+
 
 .menu {
     font-family: var(--font-main-reg);
