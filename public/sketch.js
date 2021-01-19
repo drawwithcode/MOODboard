@@ -257,11 +257,11 @@ function onPlayerUpdated(id, feelings, landmarks, dimensions) {
   const player = players.get(id);
 
   player.expressions = feelings;
+  player.dimensions = dimensions;
 
   // Fingiamo che sia un input di faceapi
   player.landmarks = {
     _positions: landmarks,
-    _imgDims: {_height: dimensions.h, _width: dimensions.w},
   };
 }
 

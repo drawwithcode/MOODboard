@@ -2,6 +2,8 @@
  *
  *
  */
+
+let sclX = 2, scY = 1;
 class Player {
   constructor({
     x,
@@ -77,7 +79,6 @@ class Player {
     this._drawElement(this.rightEye);
     this._drawElement(this.mouth);
     noStroke();
-
 
     if (DEBUG_MODE) {
       textAlign(CENTER);
@@ -167,15 +168,20 @@ class Player {
     for (let i = 0; i < points.length - 1; i++) {
       const pos = points[i];
       const next = points[i + 1];
-      scribble.scribbleLine(pos._x, pos._y, next._x, next._y);
+      line(pos._x, pos._y, next._x, next._y);
     }
-    close && scribble.scribbleLine(
+    close && line(
         points[0]._x, points[0]._y,
         points[points.length - 1]._x, points[points.length - 1]._y,
     );
   }
 
   set detection(detection) {
+    this.dimensions = {
+      h: detection.alignedRect.box._height,
+      w: detection.alignedRect.box._width,
+    };
+
     this.landmarks = detection.unshiftedLandmarks;
     this.expressions = detection.expressions;
   }
@@ -205,16 +211,8 @@ class Player {
 
   set landmarks({
     _positions,
-    _imgDims: {
-      _height,
-      _width,
-    },
   }) {
     this._landmarks = _positions;
-    this.dimensions = {
-      h: _height,
-      w: _width,
-    };
 
     this.jaw = _positions.slice(0, 17);
     this.leftEyebrow = _positions.slice(17, 22);
@@ -225,36 +223,32 @@ class Player {
     this.mouth = _positions.slice(48, 68);
   }
 
-
   drawPotato() {
     // const points = this.jaw;
 
-    beginShape();
-
     const larg = this.dimensions.w;
     const alt = this.dimensions.h;
-    const noseX = this.nose[6]._x;
-    const noseY = this.nose[6]._y;
-    fill('white');
-    noStroke();
-    ellipseMode(CENTER);
 
-    ellipse( larg/2, alt/2-10, larg+10, alt+10);
+    push();
+    /**
+     * alt/2.5 per
+     */
+    translate(larg / 2, alt / 2.5);
+    scale(1, 1.2);
 
-    // push();
-    // translate(larg/2, alt/2);
-    // beginShape();
-    // for (let i = 0; i < 60; i++) {
-    //   const a = TWO_PI * i / 60;
-    //   vertex(cos(a) * larg /2 + noise(i/100), sin(a) * alt /2 * noise(i/100) );
-    // }
-    //
-    // endShape();
-    // pop();
+    const noiseDivider = 3;
+    beginShape();
+    for (let i = 0; i < 15; i++) {
+      const a = TWO_PI * i / 15;
+      const noiseX = (noise(a, frameCount/20) - .5) / noiseDivider;
+      const noiseY = (noise(a, frameCount/20) - .5) / noiseDivider;
+      vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
+    }
 
+    endShape(CLOSE);
+    pop();
 
     // for (var i = 0; i < points.length; i++) {
-
 
     // const point = points[i];
     //
@@ -265,7 +259,5 @@ class Player {
     //       vertex(point._x + noise(i/10, frameCount/100) * 70 * mult, point._y + noise(i/10, frameCount/100))
     //
     //     }
-
-    endShape();
   }
 }
