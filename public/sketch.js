@@ -128,7 +128,8 @@ function start() {
 }
 
 async function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight).parent("#backgroundP5");
+
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
