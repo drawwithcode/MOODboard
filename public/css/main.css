@@ -47,6 +47,21 @@ p {
 
 }
 
+/*#about.collapse {
+  position: fixed;
+  top:0;
+  bottom: 0;
+  width:30vw;
+  right:-30vw;
+}
+
+#about.show {
+  right:0;
+}
+
+#about.collapsing {
+  transition: right 2s;
+}*/
 
 .menu {
     font-family: var(--font-main-reg);
