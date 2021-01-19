@@ -44,7 +44,7 @@ void main() {
 
 
   //vec2 position = ( gl_FragCoord.xy / resolution.xy );
-  vec2 position = (gl_FragCoord.xy / resolution.xy * 1.1) - vec2(0.0, 2.7);
+  vec2 position = (gl_FragCoord.xy / resolution.xy * 2.1) - vec2(0.0, 2.7);
   float X = position.x*20.;
   float Y = position.y*20.;
   float t = time*0.6;
