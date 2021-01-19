@@ -37,14 +37,14 @@ vec3 band(vec2 pos) {
   if (y <= happy+angry+sad+fearful) return VIOLET;
   if (y <= happy+angry+sad+fearful+disgusted) return CGREEN;
   if (y <= happy+angry+sad+fearful+disgusted+surprised) return WGREEN;
-  if (y <= happy+angry+sad+fearful+disgusted+surprised+neutral) return GRAY;
+  if (y <= 200.) return GRAY;
 }
 
 void main() {
 
 
   //vec2 position = ( gl_FragCoord.xy / resolution.xy );
-  vec2 position = (gl_FragCoord.xy / resolution.xy * 2.1) - vec2(0.0, 2.7);
+  vec2 position = (gl_FragCoord.xy / resolution.xy * 1.5) - vec2(0.0, 2.7);
   float X = position.x*20.;
   float Y = position.y*20.;
   float t = time*0.6;
