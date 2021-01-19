@@ -40,7 +40,7 @@
   <div class="row" style="padding-top:20px;">
     <div class="col-lg-6" style="padding-left:50px;"><span class="menu">MOODboard</span></div>
     <div class="col-lg-6 d-flex justify-content-end" style="padding-right: 50px;">
-      <span class="menu">About</span>
+      <span class="menu" onclick="openNav()">About</span>
       <!--<span class="menu" data-bs-toggle="collapse" href="#about" role="button" aria-expanded="false" aria-controls="about">About</span>
       <div class="collapse" id="about">
         <div class="card card-body">
@@ -50,7 +50,22 @@
     </div>
   </div>
 </section>
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div class="row aboutSection">
+    <div class="offset-2 col-lg-8">
+      <span class="textAbout">
+        MOODboard is a project built in p5.js for the course Creative Coding at the Politecnico di Milano by <a href="https://github.com/michelebruno" target="_blank">Michele
+        Bruno</a>, <a href="">Federica Laurencio</a>, <a href="">Valentina Pallacci</a>, <a href="https://federicopozzi.github.io/portfolio/" target="_blank">Federico Pozzi</a>.
+       </span>
+        <span class="textAbout"> The main goal was to create an interactive experience where the user can re-connect with his/her peers and other
+        anonymous surfers through his/her emotions, to enable speculation around the theme of sentient algorithms.
+      </span>
+    </div>
+  </div>
 
+</div>
+<!--<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>-->
 
 <div id="start2" class="startContainer d-flex justify-content-center align-items-center pt-4 pb-4">
   <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -100,12 +115,21 @@
 
 </div>
 
-<button class="menu btn" onclick="bg.takeScreenshot()" style="position:absolute; top:90%; left:3%; " >Save</button>
+<button class="menu btn" onclick="bg.takeScreenshot()" style="position:absolute; top:90%; left:3%; ">Save</button>
 
 
 <div id="backgroundP5"></div>
 <div id="faces"></div>
 
+<script>
+  function openNav() {
+    document.getElementById('mySidenav').style.right = '0';
+  }
+
+  function closeNav() {
+    document.getElementById('mySidenav').style.right = '-45vw';
+  }
+</script>
 <script src="sketch.js"></script>
 
 </body>
