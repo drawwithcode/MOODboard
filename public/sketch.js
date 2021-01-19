@@ -1,6 +1,8 @@
 // Create a new connection using socket.io (immported in index.html)
 const socket = io();
 let video;
+let bgShader;
+
 const detecting = false;
 /**
  * L'istanza di Player che rappresente il giocatore presente.
@@ -55,6 +57,12 @@ const palette = {
 
 // neutral, happy, sad, angry, fearful, disgusted, surprised
 const feelings = Object.keys(palette);
+
+const bg = new p5((sketck) => {
+  sketck.setup = function() {
+    sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
+  };
+});
 
 /**
  * These are the points in
@@ -127,9 +135,12 @@ function start() {
   detectFace();
 }
 
-async function setup() {
-  createCanvas(windowWidth, windowHeight).parent("#backgroundP5");
+function preload() {
+  bgShader = loadShader('shader.vert', 'shader.frag');
+}
 
+async function setup() {
+  createCanvas(windowWidth, windowHeight).parent('#faces');
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
@@ -150,7 +161,6 @@ async function setup() {
 
   video.hide();
 
-
   if (typeof socket.id !== 'undefined') {
     players.set(socket.id,
         new Player({id: socket.id, x: width / 2, y: height / 2}));
@@ -160,15 +170,39 @@ async function setup() {
 }
 
 function draw() {
+  const mm = mouseX / 100;
+  console.log(mm);
+
+  bg.shader(bgShader);
+
   clear();
 
   for (const [, gravityPoint] of gravityPoints) {
     gravityPoint.run();
   }
 
+  const summedFeeling = {
+    neutral: 0, happy: 0, sad: 0, angry: 0, fearful: 0, disgusted: 0, surprised: 0,
+  };
   for (const [, player] of players) {
     player.run();
+
+    if (player.feelings) {
+      for (const [f, value] of Object.entries(player.feelings)) {
+        summedFeeling[f] += value;
+      }
+    }
   }
+
+  for (const [f, v] of Object.entries(summedFeeling)) {
+    bgShader.setUniform(f, v);
+  }
+
+  bgShader.setUniform('resolution', [width, height]);
+  bgShader.setUniform('time', millis() / 1000.0);
+  bgShader.setUniform('value', mm);
+
+  bg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
 }
 
 /**
@@ -234,3 +268,5 @@ socket.on('connect', function() {
 
 socket.on('player.updated', onPlayerUpdated);
 socket.on('player.left', onPlayerLeft);
+
+
