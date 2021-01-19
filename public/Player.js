@@ -53,7 +53,7 @@ class Player {
         this.feelingValue,
     );
 
-    stroke(lerpedColor);
+    stroke(col);
 
     const faceWidth = 120;
 
@@ -89,6 +89,9 @@ class Player {
     pop();
   }
 
+  /**
+   * @todo capire se serve a qualcosa
+   */
   attract() {
     players.forEach((other) => {
       if (other.feeling !== this.feeling || other.id === this.id) {
@@ -158,10 +161,6 @@ class Player {
       this.vel.reflect(createVector(0, 1));
       this.pos.y = height;
     }
-  }
-
-  drawPhysicViz() {
-    ellipse(this.pos.x, this.pos.y, 20 * this.feelingValue);
   }
 
   _drawElement(points, close = true) {

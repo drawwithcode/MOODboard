@@ -2,6 +2,7 @@
 const socket = io();
 let video;
 let bgShader;
+let font;
 /**
  * L'istanza di Player che rappresente il giocatore presente.
  *
@@ -57,7 +58,6 @@ const palette = {
 const feelings = Object.keys(palette);
 
 const bg = new p5((sketck) => {
-  let c;
   sketck.setup = function() {
     c = sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
   };
@@ -66,13 +66,12 @@ const bg = new p5((sketck) => {
    * Chiamare questa funzione ovunque per il download dello screenshot (bg.takeScreenshot());
    */
   sketck.takeScreenshot = function() {
-    sketck.saveCanvas(c, 'MOODboard', 'png');
+    sketck.saveCanvas('MOODboard', 'png');
   };
   sketck.windowResized = function() {
     sketck.resizeCanvas(sketck.windowWidth, sketck.windowHeight);
   };
 });
-
 
 /**
  * These are the points in
@@ -147,6 +146,7 @@ function start() {
 
 function preload() {
   bgShader = loadShader('shader.vert', 'shader.frag');
+  font = loadFont('font/Karrik-Regular.woff');
 }
 
 async function setup() {
@@ -198,6 +198,7 @@ async function setup() {
 }
 
 function draw() {
+  textFont(font);
   const mm = mouseX / 100;
 
   bg.shader(bgShader);
