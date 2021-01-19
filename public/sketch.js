@@ -2,8 +2,6 @@
 const socket = io();
 let video;
 let bgShader;
-
-const detecting = false;
 /**
  * L'istanza di Player che rappresente il giocatore presente.
  *
@@ -59,10 +57,22 @@ const palette = {
 const feelings = Object.keys(palette);
 
 const bg = new p5((sketck) => {
+  let c;
   sketck.setup = function() {
-    sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
+    c = sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
+  };
+
+  /**
+   * Chiamare questa funzione ovunque per il download dello screenshot (bg.takeScreenshot());
+   */
+  sketck.takeScreenshot = function() {
+    sketck.saveCanvas(c, 'MOODboard', 'png');
+  };
+  sketck.windowResized = function() {
+    sketck.resizeCanvas(sketck.windowWidth, sketck.windowHeight);
   };
 });
+
 
 /**
  * These are the points in
