@@ -46,13 +46,13 @@ let detection;
  * @type {{string}}
  */
 const palette = {
-  happy: 'green',
-  sad: 'blue',
-  angry: 'red',
-  fearful: 'aqua',
-  disgusted: 'purple',
-  surprised: 'brown',
-  neutral: 'gray',
+  happy: '#FEBE43',
+  sad: '#5374E7',
+  angry: '#EF6C94',
+  fearful: '#EB9AF4',
+  disgusted: '#ABD690',
+  surprised: '#D8D555',
+  neutral: '#DFDFDF',
 };
 
 // neutral, happy, sad, angry, fearful, disgusted, surprised
@@ -272,5 +272,3 @@ socket.on('connect', function() {
 
 socket.on('player.updated', onPlayerUpdated);
 socket.on('player.left', onPlayerLeft);
-
-
