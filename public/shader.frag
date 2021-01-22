@@ -5,7 +5,6 @@ precision mediump float;
 
 
 uniform float time;
-uniform float value;
 uniform vec2 resolution;
 
 
@@ -31,13 +30,15 @@ const vec3 GRAY = RGB(244.0, 244.0, 244.0);
 
 vec3 band(vec2 pos) {
   float y = abs(pos.y) - 0.0;
-  if (y <= happy) return YELLOW;
-  if (y <= happy+angry) return PINK;
-  if (y <= happy+angry+sad) return BLUE;
-  if (y <= happy+angry+sad+fearful) return VIOLET;
-  if (y <= happy+angry+sad+fearful+disgusted) return CGREEN;
-  if (y <= happy+angry+sad+fearful+disgusted+surprised) return WGREEN;
-  if (y <= 200.) return GRAY;
+
+  if (y < happy) return YELLOW;
+  if (y < happy+angry) return PINK;
+  if (y < happy+angry+sad) return BLUE;
+  if (y < happy+angry+sad+fearful) return VIOLET;
+  if (y < happy+angry+sad+fearful+disgusted) return CGREEN;
+  if (y < happy+angry+sad+fearful+disgusted+surprised) return WGREEN;
+
+  return GRAY;
 }
 
 void main() {

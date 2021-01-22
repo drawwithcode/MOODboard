@@ -149,20 +149,15 @@ class Player {
     this.feelingValue = 0;
 
     for (const feeling of feelings) {
-      const value = expressions[feeling];
       /**
        * Cerchiamo di diminuire i neutral, favorendo le altre espressioni
        */
-      const v = feeling === 'neutral' ? value * .6 : value;
+      const value = feeling === 'neutral' ? expressions[feeling] * .4 : expressions[feeling];
 
-      if (v > this.feelingValue) {
+      if (value > this.feelingValue) {
         this.feeling = feeling;
         this.feelingValue = value;
       }
-    }
-
-    if (DEBUG_MODE) {
-      DEBUG.expressions.push([this.feeling, this.feelingValue, expressions]);
     }
   }
 
@@ -198,8 +193,8 @@ class Player {
     beginShape();
     for (let i = 0; i < 15; i++) {
       const a = TWO_PI * i / 15;
-      const noiseX = (noise(a, frameCount/20) - .5) / noiseDivider;
-      const noiseY = (noise(a, frameCount/20) - .5) / noiseDivider;
+      const noiseX = (noise(a, frameCount / 20) - .5) / noiseDivider;
+      const noiseY = (noise(a, frameCount / 20) - .5) / noiseDivider;
       vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
     }
     endShape(CLOSE);
