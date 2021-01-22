@@ -1,9 +1,3 @@
-/**
- *
- *
- */
-
-let sclX = 2, scY = 1;
 class Player {
   constructor({
     x,
@@ -30,7 +24,7 @@ class Player {
   }
 
   run() {
-    this.attract();
+    // this.attract();
     this.updatePosition();
     this.draw();
   }
@@ -49,12 +43,6 @@ class Player {
 
     const col = palette[this.feeling];
 
-    const lerpedColor = lerpColor(
-        color('white'), // Colore di partenza, se il valore fosse 0.
-        color(col), // Colore se il valore fosse 1.
-        this.feelingValue,
-    );
-
     stroke(col);
 
     const faceWidth = 120;
@@ -63,8 +51,7 @@ class Player {
         faceWidth / this.dimensions.w,
         faceWidth / this.dimensions.w,
     );
-    // scale(60/this.dimensions.w, this.dimensions.h * 60/ this.dimensions.w);
-    // this.drawPhysicViz();
+
     fill('white');
     push();
     this.drawPotato();
@@ -88,37 +75,6 @@ class Player {
     }
 
     pop();
-  }
-
-  /**
-   * @todo capire se serve a qualcosa
-   */
-  attract() {
-    players.forEach((other) => {
-      if (other.feeling !== this.feeling || other.id === this.id) {
-        return;
-      }
-
-      /**
-       *
-       * @type {p5.Vector} force
-       */
-      const force = p5.Vector.sub(this.pos, other.pos);
-
-      let distance = force.mag();
-
-      if (distance < 10) return;
-
-      if (distance < 150) distance *= distance;
-
-      /**
-       * @todo decidere se lasciare diviso distance^2
-       */
-      force.setMag(
-          G * this.feelingValue * other.feelingValue / pow(distance, 2));
-
-      other.applyForce(force);
-    });
   }
 
   broadcast() {
@@ -192,7 +148,8 @@ class Player {
     this.feeling = '';
     this.feelingValue = 0;
 
-    for (const [feeling, value] of Object.entries(expressions)) {
+    for (const feeling of feelings) {
+      const value = expressions[feeling];
       /**
        * Cerchiamo di diminuire i neutral, favorendo le altre espressioni
        */
@@ -230,8 +187,9 @@ class Player {
     const alt = this.dimensions.h;
 
     push();
+    noStroke();
     /**
-     * alt/2.5 per
+     * alt/2.5 per centrare un po'
      */
     translate(larg / 2, alt / 2.5);
     scale(1, 1.2);
@@ -244,7 +202,6 @@ class Player {
       const noiseY = (noise(a, frameCount/20) - .5) / noiseDivider;
       vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
     }
-
     endShape(CLOSE);
     pop();
 

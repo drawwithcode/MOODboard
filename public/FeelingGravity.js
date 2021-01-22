@@ -33,14 +33,15 @@ class FeelingGravity {
       } else other.stop();
     }
 
-    this.draw();
+    started && this.feeling !== 'neutral' && this.draw();
   }
 
   draw() {
     push();
-    color(0, 0, 0, .5);
+    let col = color(palette[this.feeling]);
+    fill(col);
     textAlign(CENTER);
-    textSize(30);
+    textSize(23);
     text(this.feeling.toUpperCase(), this.pos.x, this.pos.y + 20);
     pop();
   }
@@ -51,27 +52,32 @@ class FeelingGravity {
    * Da richiamare al resize.
    */
   setPosition() {
+    let hUnit = height/8;
+
     switch (this.feeling) {
       case 'neutral':
-        this.pos = createVector(4 * width / 8, 4 * height / 8);
-        break;
-      case 'happy':
-        this.pos = createVector(1 * width / 8, 2 * height / 8);
-        break;
-      case 'sad':
-        this.pos = createVector(4 * width / 8, 1 * height / 8);
-        break;
-      case 'angry':
-        this.pos = createVector(7 * width / 8, 2 * height / 8);
-        break;
-      case 'fearful':
-        this.pos = createVector(7 * width / 8, 6 * height / 8);
-        break;
-      case 'disgusted':
-        this.pos = createVector(4 * width / 8, 7 * height / 8);
+        this.pos = createVector(4 * width / 8, 4 * hUnit);
         break;
       case 'surprised':
-        this.pos = createVector(1 * width / 8, 6 * height / 8);
+        this.pos = createVector(1 * width / 8, 3 * hUnit);
+        break;
+      case 'happy':
+        this.pos = createVector(4 * width / 8, 1 * hUnit);
+        break;
+      case 'angry':
+        this.pos = createVector(7 * width / 8, 3 * hUnit);
+        break;
+      case 'disgusted':
+        this.pos = createVector(7 * width / 8, 5.5 * hUnit);
+        break;
+      case 'sad':
+        this.pos = createVector(4 * width / 8, 7 * hUnit);
+        break;
+      case 'fearful':
+        this.pos = createVector(1 * width / 8, 5.5 * hUnit);
+        break;
+      default:
+        console.warn(this.feeling + " is not a valid expression.")
         break;
     }
   }

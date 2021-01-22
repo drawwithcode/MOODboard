@@ -18,14 +18,7 @@ const scribble = new Scribble();
 
 // eslint-disable-next-line prefer-const
 let DEBUG_MODE = true;
-
-/**
- * Qui si accumulano un po' di dati per il debug.
- * @type {{expressions: [string[]]}}
- */
-const DEBUG = {
-  expressions: [],
-};
+let started = false;
 
 /**
  * Costante di attrazione gravitazionale.
@@ -59,7 +52,7 @@ const feelings = Object.keys(palette);
 
 const bg = new p5((sketck) => {
   sketck.setup = function() {
-    c = sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
+    sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
   };
 
   /**
@@ -231,27 +224,10 @@ function windowResized() {
   }
 }
 
-/**
- * Riassegna casualmente le espressioni ai players.
- *
- * Solo per la fase di sviluppo.
- *
- * @param {boolean} auto indica se andare in loop la funzione.
- */
-function shufflefeelings(auto = true) {
-  for (const player of players) {
-    player.feeling = random(feelings);
-    player.feelingValue = random(.4, 1);
-  }
-
-  if (auto) {
-    setTimeout(random(800, 5000), shufflefeelings);
-  }
-}
 
 function onPlayerUpdated(id, feelings, landmarks, dimensions) {
   if (!players.has(id)) {
-    players.set(id, new Player({id}));
+    players.set(id, new Player({id, x: width/2, y: height/2}));
   }
 
   const player = players.get(id);
