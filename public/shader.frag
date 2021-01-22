@@ -5,7 +5,6 @@ precision mediump float;
 
 
 uniform float time;
-uniform float value;
 uniform vec2 resolution;
 
 

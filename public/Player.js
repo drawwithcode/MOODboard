@@ -160,10 +160,6 @@ class Player {
         this.feelingValue = value;
       }
     }
-
-    if (DEBUG_MODE) {
-      DEBUG.expressions.push([this.feeling, this.feelingValue, expressions]);
-    }
   }
 
   set landmarks({

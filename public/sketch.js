@@ -20,6 +20,8 @@ const scribble = new Scribble();
 let DEBUG_MODE = true;
 let started = false;
 
+let detection;
+const detectionOptions = new faceapi.TinyFaceDetectorOptions();
 /**
  * Costante di attrazione gravitazionale.
  *
@@ -28,9 +30,6 @@ let started = false;
  */
 const G = 100;
 
-const detectionOptions = new faceapi.TinyFaceDetectorOptions();
-
-let detection;
 
 /**
  * Palette delle emozioni
@@ -50,6 +49,13 @@ const palette = {
 // neutral, happy, sad, angry, fearful, disgusted, surprised
 const feelings = Object.keys(palette);
 
+const summedFeelings = {
+  prev: {},
+  next: {},
+  lastTimestamp: 0,
+  interval: 600,
+};
+
 const bg = new p5((sketck) => {
   sketck.setup = function() {
     sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
@@ -61,8 +67,10 @@ const bg = new p5((sketck) => {
   sketck.takeScreenshot = function() {
     sketck.saveCanvas('MOODboard', 'png');
   };
+
   sketck.windowResized = function() {
     sketck.resizeCanvas(sketck.windowWidth, sketck.windowHeight);
+    bgShader.setUniform('resolution', [width, height]);
   };
 });
 
@@ -134,6 +142,9 @@ async function detectFace() {
 function start() {
   const detectionButton = document.getElementById('start2');
   detectionButton.remove();
+
+  started = true;
+
   detectFace();
 }
 
@@ -172,31 +183,30 @@ async function setup() {
   }
 
   setInterval(function() {
-    const summedFeeling = {
+    const nextFeelings = {
       neutral: 0, happy: 0, sad: 0, angry: 0, fearful: 0, disgusted: 0, surprised: 0,
     };
 
     for (const [, player] of players) {
       if (player.feelings) {
-        for (const [f, value] of Object.entries(player.feelings)) {
-          summedFeeling[f] += value;
+        for (const feeling of feelings) {
+          nextFeelings[feeling] += player.feelings[feeling];
         }
       }
     }
 
-    for (const [f, v] of Object.entries(summedFeeling)) {
-      bgShader.setUniform(f, v);
-    }
-  }, 400);
+    summedFeelings.prev = summedFeelings.next;
+    summedFeelings.next = nextFeelings;
+    summedFeelings.lastTimestamp = Date.now();
+  }, summedFeelings.interval);
+
+  bgShader.setUniform('resolution', [width, height]);
 }
 
 function draw() {
-  textFont(font);
-  const mm = mouseX / 100;
-
-  bg.shader(bgShader);
-
   clear();
+
+  textFont(font);
 
   for (const [, gravityPoint] of gravityPoints) {
     gravityPoint.run();
@@ -206,11 +216,23 @@ function draw() {
     player.run();
   }
 
-  bgShader.setUniform('resolution', [width, height]);
   bgShader.setUniform('time', millis() / 1000.0);
-  bgShader.setUniform('value', mm);
 
-  bg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+  const {prev, next, lastTimestamp, interval} = summedFeelings;
+
+  if (prev && next) {
+    bg.shader(bgShader);
+
+    const now = Date.now();
+
+    const amt = (now - lastTimestamp) / interval;
+
+    for (const feeling of feelings) {
+      const lerped = lerp(prev[feeling], next[feeling], amt);
+      bgShader.setUniform(feeling, lerped);
+    }
+    bg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+  }
 }
 
 /**
@@ -224,10 +246,9 @@ function windowResized() {
   }
 }
 
-
 function onPlayerUpdated(id, feelings, landmarks, dimensions) {
   if (!players.has(id)) {
-    players.set(id, new Player({id, x: width/2, y: height/2}));
+    players.set(id, new Player({id, x: width / 2, y: height / 2}));
   }
 
   const player = players.get(id);
