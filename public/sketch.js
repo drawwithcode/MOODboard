@@ -72,7 +72,6 @@ const bg = new p5((sketck) => {
   };
 });
 
-
 /**
  * These are the points in
  * @type {Map<string, FeelingGravity>}
@@ -135,11 +134,12 @@ async function detectFace() {
   return detectFace();
 }
 
+const detectionButton = document.getElementById('start2');
+
 /**
  * Funzione chiamata dal <button>
  */
 function start() {
-  const detectionButton = document.getElementById('start2');
   detectionButton.remove();
 
   started = true;
@@ -168,7 +168,10 @@ async function setup() {
   await faceapi.loadFaceLandmarkModel(MODEL_URL);
 
   video = createCapture(VIDEO, function() {
-    document.getElementById('start').disabled = false;
+    const start = document.getElementById('start');
+
+    start.disabled = false;
+    start.classList.remove('disabled');
     DEBUG_MODE && console.debug('Video is ready.');
   });
 
