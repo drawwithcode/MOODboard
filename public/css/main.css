@@ -387,18 +387,34 @@ p {
   transition: .6s;
 }
 
-.bg-will-be-animated:hover .cool-underlined::before
+.bg-will-be-animated:hover .cool-underlinedr::before
 {
   visibility: visible;
   width: 0;
 }
-.bg-will-be-animated .cool-underlined::before  {
+.bg-will-be-animated .cool-underlinedr::before  {
   content: "";
   position: absolute;
   width: 100%;
   height: 3px;
   bottom: -1px;
   right: 0;
+  background-color: black;
+  transition: .6s ease-in-out;
+}
+
+.bg-will-be-animated:hover .cool-underlinedl::before
+{
+  visibility: visible;
+  width: 0;
+}
+.bg-will-be-animated .cool-underlinedl::before  {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -1px;
+  left: 0;
   background-color: black;
   transition: .6s ease-in-out;
 }
