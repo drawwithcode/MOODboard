@@ -1,7 +1,7 @@
 @font-face {
-    font-family: Karrik-reg;
-    src: url('../font/Karrik-Regular.woff') format('woff'),
-    url('../font/Karrik-Regular.woff2') format('woff2')
+  font-family: Karrik-reg;
+  src: url('../font/Karrik-Regular.woff') format('woff'),
+  url('../font/Karrik-Regular.woff2') format('woff2')
 }
 
 a {
@@ -10,35 +10,35 @@ a {
 }
 
 html {
-    --color-main: #C4C4C4;
-    --font-main-reg: Karrik-reg;
-    --font-size-header: 30px;
-    --font-size-welcome:30px;
+  --color-main: #C4C4C4;
+  --font-main-reg: Karrik-reg;
+  --font-size-header: 30px;
+  --font-size-welcome: 30px;
 }
 
 body {
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }
 
 p {
-    text-align: center;
-    margin-bottom:0;
-    font-family: var(--font-main-reg);
-    font-size: var(--font-size-welcome);
-    line-height: 30px;
+  text-align: center;
+  margin-bottom: 0;
+  font-family: var(--font-main-reg);
+  font-size: var(--font-size-welcome);
+  line-height: 30px;
 }
 
- .startContainer {
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    width: 1000px;
-    height: 400px;
-    border-radius: 40px;
+.startContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 1000px;
+  height: 400px;
+  border-radius: 40px;
 }
 
 
@@ -47,7 +47,8 @@ p {
   height: 400px;
 }*/
 
-.ww {width: 1000px;
+.ww {
+  width: 1000px;
   height: 400px;
 
 }
@@ -69,17 +70,17 @@ p {
 }*/
 
 .menu {
-    font-family: var(--font-main-reg);
-    font-size: var(--font-size-header);
-    cursor: pointer;
+  font-family: var(--font-main-reg);
+  font-size: var(--font-size-header);
+  cursor: pointer;
 }
 
 .start {
   width: 150px;
   height: 150px;
 
-  cursor:pointer;
-  border:1px solid black;
+  cursor: pointer;
+  border: 1px solid black;
 
   border-radius: 50%;
   font-size: 20px;
@@ -93,8 +94,8 @@ p {
   width: 150px;
   height: 150px;
 
-  cursor:pointer;
-  border:1px solid black;
+  cursor: pointer;
+  border: 1px solid black;
 
   border-radius: 50%;
   font-size: 20px;
@@ -119,17 +120,17 @@ p {
 
 #backgroundP5 {
   position: absolute;
-  top:0;
+  top: 0;
   height: 100vh;
-  width:100%;
+  width: 100%;
   z-index: -9999;
 }
 
 #faces {
   position: absolute;
-  top:0;
+  top: 0;
   height: 100vh;
-  width:100%;
+  width: 100%;
   z-index: -9999;
 }
 
@@ -195,7 +196,7 @@ p {
   border-radius: 5px;
   transition: 25ms ease-out;
   padding: 0.5em 0.75em;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif
 }
 
 .resp-sharing-button__icon svg {
@@ -306,7 +307,10 @@ p {
 .resp-sharing-button--hackernews {
   background-color: #FF6600
 }
-.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
+
+.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {
+  background-color: #FB6200
+}
 
 .resp-sharing-button--vk {
   background-color: #507299
@@ -332,10 +336,11 @@ p {
 }
 
 .resp-sharing-button--telegram:hover {
-  background-color: #4B97D1;}
+  background-color: #4B97D1;
+}
 
 .mobile {
-  display:none;
+  display: none;
 }
 
 .desktop {
@@ -344,13 +349,16 @@ p {
 
 @media only screen and (max-width: 414px) {
   body {
-    background-color: black; color:white;
+    background-color: black;
+    color: white;
   }
+
   .desktop {
-    display:none;
+    display: none;
   }
+
   .mobile {
-    display:initial;
+    display: initial;
   }
 }
 
@@ -359,4 +367,38 @@ p {
   top: 0;
   left: 0;
   transition: transform 100ms;
+}
+
+.bg-will-be-animated .bg-animation {
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  background-color: #FEBE43;
+  border-radius: 50%;
+  transform: scale(0);
+  z-index: -1;
+  transition: 1s;
+  transition-timing-function: cubic-bezier(0.13, 0, 0, 1);
+}
+
+.bg-will-be-animated:hover .bg-animation {
+  transform: scale(15);
+  transition: 1s;
+}
+
+.bg-will-be-animated:hover .cool-underlined::before
+{
+  visibility: visible;
+  width: 0;
+}
+.bg-will-be-animated .cool-underlined::before  {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -1px;
+  right: 0;
+  background-color: black;
+  transition: 1s ease-in-out;
 }
