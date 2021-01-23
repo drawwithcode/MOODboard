@@ -75,28 +75,46 @@ p {
 }
 
 .start {
-  width: 200px;
-  height: 200px;
-  line-height: 200px;
-  cursor:pointer;
-  border-radius: 50%;
-  font-size: 20px;
-  text-align: center;
-  background-color: var(--color-main);
-  margin-top: 15px;
-}
-
-.controlCarosel {
   width: 150px;
   height: 150px;
-  line-height: 150px;
+
   cursor:pointer;
+  border:1px solid black;
+
   border-radius: 50%;
   font-size: 20px;
   text-align: center;
   background-color: white;
   margin-top: 15px;
   transform: rotate(-20deg);
+}
+
+.controlCarosel {
+  width: 150px;
+  height: 150px;
+
+  cursor:pointer;
+  border:1px solid black;
+
+  border-radius: 50%;
+  font-size: 20px;
+  text-align: center;
+  background-color: white;
+  margin-top: 15px;
+  transform: rotate(-20deg);
+}
+
+.controlCarosel:hover {
+  animation: rotation 1s infinite alternate;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(359deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 #backgroundP5 {
