@@ -343,6 +343,9 @@ p {
 }
 
 @media only screen and (max-width: 414px) {
+  body {
+    background-color: black; color:white;
+  }
   .desktop {
     display:none;
   }
