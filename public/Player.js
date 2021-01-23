@@ -67,11 +67,13 @@ class Player {
     this._drawElement(this.mouth);
     noStroke();
 
-    if (DEBUG_MODE) {
+    if (this.id === socket.id) {
+      fill('black');
       textAlign(CENTER);
       textSize(40);
-      text(this.feeling + ' ' + this.feelingValue.toFixed(2),
-          this.dimensions.w / 2, this.dimensions.h + 20);
+      text('You', -this.dimensions.w / 2 +200, -this.dimensions.h / 2 + 370 );
+    } else {
+      console.log('ciao');
     }
 
     pop();
