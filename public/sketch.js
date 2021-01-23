@@ -14,7 +14,6 @@ let me;
  * @type {Map<string, Player>}
  */
 const players = new Map;
-const scribble = new Scribble();
 
 // eslint-disable-next-line prefer-const
 let DEBUG_MODE = true;
