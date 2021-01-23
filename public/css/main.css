@@ -333,3 +333,20 @@ p {
 
 .resp-sharing-button--telegram:hover {
   background-color: #4B97D1;}
+
+.mobile {
+  display:none;
+}
+
+.desktop {
+  display: initial;
+}
+
+@media only screen and (max-width: 414px) {
+  .desktop {
+    display:none;
+  }
+  .mobile {
+    display:initial;
+  }
+}
