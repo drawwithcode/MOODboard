@@ -29,7 +29,6 @@ const detectionOptions = new faceapi.TinyFaceDetectorOptions();
  */
 const G = 100;
 
-
 /**
  * Palette delle emozioni
  *
@@ -72,6 +71,25 @@ const bg = new p5((sketck) => {
     bgShader.setUniform('resolution', [width, height]);
   };
 });
+
+const coolSketch = new p5((coolSketch) => {
+  coolSketch.setup = function() {
+    coolSketch.createCanvas(50, 50).parent('backgroundP5').id('coolCanvas');
+
+    coolCanvas = document.getElementById('coolCanvas');
+
+    coolSketch.rect(0, 0, 50, 50);
+    setInterval(function() {
+      coolCanvas.style.transform = 'translate(' + (mouseX - 25) + 'px, ' + (mouseY - 25) + 'px)';
+    }, 50);
+  };
+
+  coolSketch.draw = function() {
+
+  };
+});
+
+let coolCanvas;
 
 /**
  * These are the points in
