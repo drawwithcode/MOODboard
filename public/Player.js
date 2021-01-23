@@ -71,7 +71,7 @@ class Player {
       fill('black');
       textAlign(CENTER);
       textSize(40);
-      text('You', -this.dimensions.w / 2 +200, -this.dimensions.h / 2 + 370 );
+      text('you', -this.dimensions.w / 2 +200, -this.dimensions.h / 2 + 370 );
     } else {
       console.log('ciao');
     }
