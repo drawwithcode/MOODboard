@@ -41,12 +41,153 @@ noStroke();
 ```
 ####Palette
 
+IMAGE
+
+####Coding
+
+
+When socket receives the data it assigns it to the corresponding player.
+
+```
+socket.on('player.left', onPlayerLeft);
+function onPlayerLeft(id) {
+  console.info('Player ' + id + ' left');
+  players.delete(id);
+}
+```
+
+
+Detect performs facial recognition.
+```
+async function detectFace() {
+  if (!me) {
+    console.warn('Probabilmente non c\'è ancora una connessione al server. Riproverò fra un secondo.');
+    return setTimeout(detectFace, 500);
+  } else if (!video) { // La cam non è attiva.
+    console.warn('Probabilmente il permesso della webcam non è ancora stato concesso. Riproverò fra un secondo.');
+    return setTimeout(detectFace, 1000);
+  }
+
+  detection = await faceapi.detectSingleFace(video.elt,
+      detectionOptions).withFaceLandmarks().withFaceExpressions();
+```
+If face-api.js finds a face but has a degree of certainty lower than the threshold value, detection starts again.
+
+```
+  if (detection) {
+        const threshold = .8;
+
+    const score = detection.detection._score;
+
+    if (score < threshold) {
+      DEBUG_MODE && console.debug('Uncertain detection');
+      return detectFace();
+    }
+
+    me.detection = detection;
+
+    me.broadcast();
+
+```
+Initially, face-api recognised many expressions as neutral. We therefore tried to **decrease the neutrals**, favouring other expressions:
+
+```
+for (const feeling of feelings) {
+ const value = feeling === 'neutral' ? expressions[feeling] * .4 : expressions[feeling];
+
+ if (value > this.feelingValue) {
+   this.feeling = feeling;
+   this.feelingValue = value;
+ }
+}
+```
+The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated on the basis of gravity points that apply forces to points with the same feeling.
+
+This class generates the **centres of gravity** of the emotions.
+
+```
+class FeelingGravity {
+  constructor({feeling}) {
+    this.feeling = feeling;
+    this.setPosition();
+  }
+
+  run() {
+
+    const filteredPlayers = [];
+
+    for (const [, player] of players) {
+      player.feeling === this.feeling && filteredPlayers.push(player);
+    }
+
+    for (const other of filteredPlayers) {
+      /**
+       *
+       * @type {p5.Vector} force
+       */
+      const force = p5.Vector.sub(this.pos, other.pos);
+
+      const distance = force.mag();
+
+      if (distance > 10) {
+        force.setMag(G * other.feelingValue * 40 / distance);
+        other.acc.add(force);
+      } else other.stop();
+    }
+
+    started && this.feeling !== 'neutral' && this.draw();
+  }
+
+  draw() {
+    push();
+    let col = color(palette[this.feeling]);
+    fill(col);
+    textAlign(CENTER);
+    textSize(23);
+    text(this.feeling.toUpperCase(), this.pos.x, this.pos.y + 20);
+    pop();
+  }
+```
+Set the position of the **centre of gravity**.
+
+```
+  setPosition() {
+    let hUnit = height/8;
+
+    switch (this.feeling) {
+      case 'neutral':
+        this.pos = createVector(4 * width / 8, 4 * hUnit);
+        break;
+      case 'surprised':
+        this.pos = createVector(1 * width / 8, 3 * hUnit);
+        break;
+      case 'happy':
+        this.pos = createVector(4 * width / 8, 1 * hUnit);
+        break;
+      case 'angry':
+        this.pos = createVector(7 * width / 8, 3 * hUnit);
+        break;
+      case 'disgusted':
+        this.pos = createVector(7 * width / 8, 5.5 * hUnit);
+        break;
+      case 'sad':
+        this.pos = createVector(4 * width / 8, 7 * hUnit);
+        break;
+      case 'fearful':
+        this.pos = createVector(1 * width / 8, 5.5 * hUnit);
+        break;
+      default:
+        console.warn(this.feeling + " is not a valid expression.")
+        break;
+    }
+  }
+```
 
 ### Background
 
 For the background, we decided very early in development that we wanted to design a **responsive generative artwork**. The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given time.
 
-####Coding
+#### Coding
 
 After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on openprocessing.org. The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in GLSL, a language that allows complex results with little computational load.
 In order to understand GLSL, we used The book of shaders and GLSL Sandbox.
@@ -54,7 +195,7 @@ On GLSL Sandbox we found some shaders that had snippets that allowed us to get c
 
 The last hurdle we had was to pass information between the sketch and the shader.  Thankfully in *The book of shaders* we discovered the possibility to set a uniform from an external code. On the p5js documentation then we finally found the method to connect shaders and p5js sketches.
 
-Using the data from Face.api we created **six uniforms** connected with each emotion. In the shader the emotions are shown as an array of horizontal stripes that grow with the variable.
+Using the data from Face.api we created **seven uniforms** connected with each emotion. In the shader the emotions are shown as an array of horizontal stripes that grow with the variable.
 The stripes are then animated with a **parametric equation**.
 
 ```
@@ -145,229 +286,230 @@ setInterval(function() {
  }
 }
 ```
-
-## Coding challenges
-
- We preferred to stick to **desktop** or **landscape mobile** because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io we will use other libraries to achieve our goals, in particular face-api.js.
-
-### Face recognition
-The position of the avatar is calculated by the browser of each user, making the site faster.
-The position is calculated on the basis of gravity points that apply forces to points with the same feeling.
+The user also has the option of **saving** the background.
 
 ```
-class Player {
-   constructor({
-     x,
-     y,
-     feeling,
-     id,
-   } = {}) {
-     this.id = id;
-     this.pos = createVector(x, y);
-     this.vel = createVector(0, 0);
-     this.vel.limit(5);
-     this.acc = createVector(0, 0);
-     this.feeling = feeling;
-     this.feelingValue = 1;
-
-     this.dimensions = {
-       h: 0,
-       w: 0,
-     };
-   }
-
-   stop() {
-     this.vel.set(0, 0);
-   }
-
-   run() {
-     // this.attract();
-     this.updatePosition();
-     this.draw();
-   }
-
-   draw() {
-     // Se non c'è ancora un feeling associato, non disegnare.
-     if (!this.feeling) {
-       return;
-     }
-
-     push();
-
-     translate(this.pos);
-
-     translate(-this.dimensions.w / 2, -this.dimensions.h / 2);
-
-     const col = palette[this.feeling];
-
-     stroke(col);
-
-     const faceWidth = 120;
-
-     scale(
-         faceWidth / this.dimensions.w,
-         faceWidth / this.dimensions.w,
-     );
-
-     fill('white');
-     push();
-     this.drawPotato();
-     pop();
-     noFill();
-     // rect(0, 0, this.dimensions.w, this.dimensions.h);
-     strokeWeight(5);
-     this._drawElement(this.leftEyebrow, false);
-     this._drawElement(this.rightEyebrow, false);
-     this._drawElement(this.nose, false);
-     this._drawElement(this.leftEye);
-     this._drawElement(this.rightEye);
-     this._drawElement(this.mouth);
-     noStroke();
-
-     if (DEBUG_MODE) {
-       textAlign(CENTER);
-       textSize(40);
-       text(this.feeling + ' ' + this.feelingValue.toFixed(2),
-           this.dimensions.w / 2, this.dimensions.h + 20);
-     }
-
-     pop();
-   }
-
-   broadcast() {
-     socket.emit('player.updated', this.feelings, this._landmarks,
-         this.dimensions);
-   }
-
-   /**
-    *
-    * @param {p5.Vector} force
-    */
-   applyForce(force) {
-     const acceleration = force.div(this.feelingValue);
-     this.acc.add(acceleration);
-   }
-
-   updatePosition() {
-     this.vel.add(this.acc);
-     this.vel.limit(4.5);
-
-     this.pos.add(this.vel);
-     this.acc.set(0, 0);
-
-     const bounceReduction = .6;
-
-     if (this.pos.x < 0) {
-       this.vel.mult(bounceReduction);
-       this.vel.reflect(createVector(1, 0));
-       this.pos.x = 0;
-     } else if (this.pos.x > width) {
-       this.vel.mult(bounceReduction);
-       this.vel.reflect(createVector(1, 0));
-       this.pos.x = width;
-     }
-     if (this.pos.y < 0) {
-       this.vel.mult(bounceReduction);
-       this.vel.reflect(createVector(0, 1));
-       this.pos.y = 0;
-     } else if (this.pos.y > height) {
-       this.vel.mult(bounceReduction);
-       this.vel.reflect(createVector(0, 1));
-       this.pos.y = height;
-     }
-   }
-
-   _drawElement(points, close = true) {
-     for (let i = 0; i < points.length - 1; i++) {
-       const pos = points[i];
-       const next = points[i + 1];
-       line(pos._x, pos._y, next._x, next._y);
-     }
-     close && line(
-         points[0]._x, points[0]._y,
-         points[points.length - 1]._x, points[points.length - 1]._y,
-     );
-   }
-
-   set detection(detection) {
-     this.dimensions = {
-       h: detection.alignedRect.box._height,
-       w: detection.alignedRect.box._width,
-     };
-
-     this.landmarks = detection.unshiftedLandmarks;
-     this.expressions = detection.expressions;
-   }
-
-   set expressions(expressions) {
-     this.feelings = expressions;
-
-     this.feeling = '';
-     this.feelingValue = 0;
-     /**
-      * Cerchiamo di diminuire i neutral, favorendo le altre espressioni
-      */
-     for (const feeling of feelings) {
-
-       const value = feeling === 'neutral' ? expressions[feeling] * .4 : expressions[feeling];
-
-       if (value > this.feelingValue) {
-         this.feeling = feeling;
-         this.feelingValue = value;
-       }
-     }
-   }
-
-   set landmarks({
-     _positions,
-   }) {
-     this._landmarks = _positions;
-
-     this.jaw = _positions.slice(0, 17);
-     this.leftEyebrow = _positions.slice(17, 22);
-     this.rightEyebrow = _positions.slice(22, 27);
-     this.nose = _positions.slice(27, 36);
-     this.leftEye = _positions.slice(36, 42);
-     this.rightEye = _positions.slice(42, 48);
-     this.mouth = _positions.slice(48, 68);
-   }
-
-   drawPotato() {
-     // const points = this.jaw;
-
-     const larg = this.dimensions.w;
-     const alt = this.dimensions.h;
-
-     push();
-     noStroke();
-     /**
-      * alt/2.5 per centrare un po'
-      */
-     translate(larg / 2, alt / 2.5);
-     scale(1, 1.2);
-
-     const noiseDivider = 3;
-     beginShape();
-     for (let i = 0; i < 15; i++) {
-       const a = TWO_PI * i / 15;
-       const noiseX = (noise(a, frameCount / 20) - .5) / noiseDivider;
-       const noiseY = (noise(a, frameCount / 20) - .5) / noiseDivider;
-       vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
-     }
-     endShape(CLOSE);
-     pop();  
+  sketck.takeScreenshot = function() {
+    sketck.saveCanvas('MOODboard', 'png');
+  };
 ```
-
-### Frag/Glsl
- In order to develop the generative artwork for the background we used this particular add on to p5 that
 
 ## Miscellaneus
 
-Heroku: The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github repository facilitating the work and development of the web app.
+###Heroku
 
-CSS: for the aspect of button and about
+The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github repository facilitating the work and development of the web app.
 
-P5.js:
+### CSS
+
+In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and **dimension** of texts.
+
+To style the interaction buttons to start the game, a **rotation animation** in css was used.
+
+```
+@keyframes rotation {
+ from {
+   transform: rotate(359deg);
+ }
+ to {
+   transform: rotate(0deg);
+ }
+}
+```
+
+### Sharingbutton.io
+
+To create the **sharing button** for the social, this online tool was used which generates html and css strings to be embedded in the website.
+
+```
+<!-- Sharingbutton WhatsApp -->
+<a class="resp-sharing-button__link" href="whatsapp://send?text=I&#x27;m%20inviting%20you%20to%20my%20shared%20emotions!%20https%3A%2F%2Fffmv-moodboard.herokuapp.com%2F" target="_blank" rel="noopener" aria-label="">
+ <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.1 3.9C17.9 1.7 15 .5 12 .5 5.8.5.7 5.6.7 11.9c0 2 .5 3.9 1.5 5.6L.6 23.4l6-1.6c1.6.9 3.5 1.3 5.4 1.3 6.3 0 11.4-5.1 11.4-11.4-.1-2.8-1.2-5.7-3.3-7.8zM12 21.4c-1.7 0-3.3-.5-4.8-1.3l-.4-.2-3.5 1 1-3.4L4 17c-1-1.5-1.4-3.2-1.4-5.1 0-5.2 4.2-9.4 9.4-9.4 2.5 0 4.9 1 6.7 2.8 1.8 1.8 2.8 4.2 2.8 6.7-.1 5.2-4.3 9.4-9.5 9.4zm5.1-7.1c-.3-.1-1.7-.9-1.9-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1s-1.2-.5-2.3-1.4c-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.1.3-.3.4-.5.1-.2 0-.4 0-.5C10 9 9.3 7.6 9 7c-.1-.4-.4-.3-.5-.3h-.6s-.4.1-.7.3c-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/></svg>
+ </div>
+ </div>
+</a>
+
+
+.resp-sharing-button__link,
+.resp-sharing-button__icon {
+ display: inline-block
+}
+
+.resp-sharing-button__link {
+ text-decoration: none;
+ color: #fff;
+ margin: 0.5em
+}
+
+.resp-sharing-button {
+ border-radius: 5px;
+ transition: 25ms ease-out;
+ padding: 0.5em 0.75em;
+ font-family: Helvetica Neue,Helvetica,Arial,sans-serif
+}
+
+.resp-sharing-button__icon svg {
+ width: 1em;
+ height: 1em;
+ margin-right: 0.4em;
+ vertical-align: top
+}
+
+.resp-sharing-button--small svg {
+ margin: 0;
+ vertical-align: middle
+}
+
+/* Non solid icons get a stroke */
+.resp-sharing-button__icon {
+ stroke: #fff;
+ fill: none
+}
+
+/* Solid icons get a fill */
+.resp-sharing-button__icon--solid,
+.resp-sharing-button__icon--solidcircle {
+ fill: #fff;
+ stroke: none
+}
+
+.resp-sharing-button--twitter {
+ background-color: #55acee
+}
+
+.resp-sharing-button--twitter:hover {
+ background-color: #2795e9
+}
+
+.resp-sharing-button--pinterest {
+ background-color: #bd081c
+}
+
+.resp-sharing-button--pinterest:hover {
+ background-color: #8c0615
+}
+
+.resp-sharing-button--facebook {
+ background-color: #3b5998
+}
+
+.resp-sharing-button--facebook:hover {
+ background-color: #2d4373
+}
+
+.resp-sharing-button--tumblr {
+ background-color: #35465C
+}
+
+.resp-sharing-button--tumblr:hover {
+ background-color: #222d3c
+}
+
+.resp-sharing-button--reddit {
+ background-color: #5f99cf
+}
+
+.resp-sharing-button--reddit:hover {
+ background-color: #3a80c1
+}
+
+.resp-sharing-button--google {
+ background-color: #dd4b39
+}
+
+.resp-sharing-button--google:hover {
+ background-color: #c23321
+}
+
+.resp-sharing-button--linkedin {
+ background-color: #0077b5
+}
+
+.resp-sharing-button--linkedin:hover {
+ background-color: #046293
+}
+
+.resp-sharing-button--email {
+ background-color: #777
+}
+
+.resp-sharing-button--email:hover {
+ background-color: #5e5e5e
+}
+
+.resp-sharing-button--xing {
+ background-color: #1a7576
+}
+
+.resp-sharing-button--xing:hover {
+ background-color: #114c4c
+}
+
+.resp-sharing-button--whatsapp {
+ background-color: #25D366
+}
+
+.resp-sharing-button--whatsapp:hover {
+ background-color: #1da851
+}
+
+.resp-sharing-button--hackernews {
+ background-color: #FF6600
+}
+.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
+
+.resp-sharing-button--vk {
+ background-color: #507299
+}
+
+.resp-sharing-button--vk:hover {
+ background-color: #43648c
+}
+
+.resp-sharing-button--whatsapp {
+ background-color: #25D366;
+ border-color: #25D366;
+}
+
+.resp-sharing-button--whatsapp:hover,
+.resp-sharing-button--whatsapp:active {
+ background-color: #1DA851;
+ border-color: #1DA851;
+}
+
+.resp-sharing-button--telegram {
+ background-color: #54A9EB;
+}
+
+.resp-sharing-button--telegram:hover {
+ background-color: #4B97D1;}
+```
+
+###New java features
+
+####Map
+The [Map object](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map) is a simple key/value map. It allows variables to be assigned a value, for example the socked.id of the players.
+
+```
+const players = new Map();
+
+if (!players.has(id)) {
+ players.set(id, new Player({id, x: width / 2, y: height / 2}));
+}
+
+const player = players.get(id);
+```
+
+####For...of
+[For...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) was used to improve the readability.
+
+```
+for (const feeling of feelings) {
+ gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
+}
+```
+
 
 ## Team
 
