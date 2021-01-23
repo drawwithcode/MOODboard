@@ -6,6 +6,11 @@
 
 a {
   color: black;
+text-decoration: none;
+}
+
+.textAbout > a {
+  color: black;
   text-decoration: underline;
 }
 
@@ -168,9 +173,7 @@ p {
   padding-top: 170px;
 }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
+
 
 .sidenav .closebtn {
   position: absolute;
