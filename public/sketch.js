@@ -108,7 +108,7 @@ async function detectFace() {
      *
      * @type {number}
      */
-    const threshold = .8;
+    const threshold = .9;
 
     const score = detection.detection._score;
 
@@ -231,6 +231,7 @@ function draw() {
       const lerped = lerp(prev[feeling], next[feeling], amt);
       bgShader.setUniform(feeling, lerped);
     }
+
     bg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   }
 }
