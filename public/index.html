@@ -37,16 +37,10 @@
 <body>
 
 <section>
-  <div class="row" style="padding-top:20px;">
-    <div class="col-lg-6" style="padding-left:50px;"><span class="menu">MOODboard</span></div>
-    <div class="col-lg-6 d-flex justify-content-end" style="padding-right: 50px;">
+  <div class="row justify-content-between" style="padding-top:20px;">
+    <div class="col-6" style="padding-left:50px;"><span class="menu">MOODboard</span></div>
+    <div class="col-auto" style="padding-right: 50px;">
       <span class="menu" onclick="openNav()">About</span>
-      <!--<span class="menu" data-bs-toggle="collapse" href="#about" role="button" aria-expanded="false" aria-controls="about">About</span>
-      <div class="collapse" id="about">
-        <div class="card card-body">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-        </div>
-      </div>-->
     </div>
   </div>
 </section>
@@ -57,7 +51,7 @@
       <span class="textAbout">
         MOODboard is a project built in p5.js for the course Creative Coding at the Politecnico di Milano by <a href="https://github.com/michelebruno" target="_blank">Michele
         Bruno</a>, <a href="">Federica Laurencio</a>, <a href="">Valentina Pallacci</a>, <a href="https://federicopozzi.github.io/portfolio/" target="_blank">Federico Pozzi</a>.
-       </span>
+       </span><br><br>
         <span class="textAbout"> The main goal was to create an interactive experience where the user can re-connect with his/her peers and other
         anonymous surfers through his/her emotions, to enable speculation around the theme of sentient algorithms.
       </span>
@@ -70,26 +64,34 @@
 <div id="start2" class="startContainer d-flex justify-content-center align-items-center pt-4 pb-4">
   <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-      <div class="carousel-item active justify-content-center" data-bs-interval="10000">
+      <div class="carousel-item active justify-content-center">
         <div class="ww d-flex align-items-center justify-content-center">
           <p>MOODboard <br/> A space to share one's feelings<br/> and reconnect with one's peers!<br>
             READY TO PLAY WITH US?
-          </p></div>
+          <br>
+          <button class="controlCarosel" href="#carouselExampleDark" role="button" data-bs-slide="next" >Next</button>
+          </p>
+        </div>
 
 
       </div>
-      <div class="carousel-item" data-bs-interval="2000">
+      <div class="carousel-item">
         <div class="ww d-flex align-items-center justify-content-center">
           <p>
             1/3
-            <br>Allow access to the camera to share your feelings </p>
+            <br>Allow access to the camera to share your feelings <br>
+          <button class="controlCarosel" href="#carouselExampleDark" role="button" data-bs-slide="next" >Done</button>
+          </p>
+
         </div>
       </div>
       <div class="carousel-item">
         <div class="ww d-flex align-items-center justify-content-center">
           <p>
             2/3
-            <br>You can see an algorithmic representation<br> of your expression, try to change it!</p>
+            <br>You can see an algorithmic representation<br> of your expression, try to change it!<br>
+          <button class="controlCarosel" href="#carouselExampleDark" role="button" data-bs-slide="next" >Understood</button>
+          </p>
         </div>
       </div>
       <div class="carousel-item">
@@ -97,25 +99,26 @@
           <p>
             3/3<br>
             If you’re ready enter to see the expressions of <br>other users connected at the same time<br>
-            <button class="start" onclick="start()" disabled id="start">Let's Go!</button>
+            <button class="controlCarosel" class="start" onclick="start()" disabled id="start">Let's Go!</button>
           </p>
         </div>
       </div>
     </div>
 
-    <a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">
+    <!--<a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
+     &lt;!&ndash; <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>&ndash;&gt;
+    </a>-->
+    <!--<a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
-    </a>
+    </a>-->
+
   </div>
 
 </div>
 
-<button class="menu btn" onclick="bg.takeScreenshot()" style="position:absolute; top:90%; left:3%; ">Save</button>
+<button class="menu btn" onclick="bg.takeScreenshot()" style="position:fixed; bottom:calc(50px - 2rem); left:calc(35px - .75rem); ">Save</button>
 
 
 <div id="backgroundP5"></div>

@@ -41,6 +41,7 @@ p {
     border-radius: 40px;
 }
 
+
 /*.carousel-item {
   width: 1000px;
   height: 400px;
@@ -74,11 +75,27 @@ p {
 }
 
 .start {
-    background-color: var(--color-main);
-    padding: 15px 50px;
-    border-radius: 20px;
-    font-size: var(--font-size-header);
-    cursor: pointer;
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  cursor:pointer;
+  border-radius: 50%;
+  font-size: 20px;
+  text-align: center;
+  background-color: var(--color-main);
+  margin-top: 15px;
+}
+
+.controlCarosel {
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  cursor:pointer;
+  border-radius: 50%;
+  font-size: 20px;
+  text-align: center;
+  background-color: var(--color-main);
+  margin-top: 15px;
 }
 
 #backgroundP5 {
