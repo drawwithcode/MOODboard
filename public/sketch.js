@@ -41,7 +41,7 @@ const palette = {
   fearful: '#EB9AF4',
   disgusted: '#ABD690',
   surprised: '#D8D555',
-  neutral: '#DFDFDF',
+  neutral: '#9da7ab',
 };
 
 // neutral, happy, sad, angry, fearful, disgusted, surprised
