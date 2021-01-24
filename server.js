@@ -161,14 +161,16 @@ class Room {
   }
 
   /**
-   *
+   * Adds a player to the room.
    * @param {Socket} player
    */
   addPlayer(player) {
+    // To avoid strange behaviours.
     if (this.isPlayerIn(player)) {
       return;
     }
 
+    // Uses socket .join() function to join the socket room.
     player.join(this.id);
 
     this.players.push(player);
