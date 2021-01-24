@@ -40,8 +40,8 @@ this._drawElement(this.mouth);
 noStroke();
 ```
 ####Palette
+![Palette](readme/palettemoodboard.png)<br>
 
-IMAGE
 
 ####Coding
 
