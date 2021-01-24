@@ -376,6 +376,12 @@ The user also has the option of **saving** the background.
 The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github
 repository facilitating the work and development of the web app.
 
+
+### Bootstrap
+
+In order to organize the structure of the webpage we used this css framework that helped and made much more easy this side of the project.
+
+
 ### CSS
 
 In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and
