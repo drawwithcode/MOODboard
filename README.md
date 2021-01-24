@@ -21,23 +21,20 @@ If you want to know more about the course visit [this website](https://drawwithc
 ### Table of Contents
 
 1. [Concept](#concept)
-  * Project idea
-  * Communication aim
-  * Context of use
-  * Device
-
+    * Project idea
+    * Communication aim
+    * Context of use
+    * Device
 2. [Design and coding challenges](#Design-and-coding-challenges)
-  * Face recognition
-    * Coding challenges
-  * Background
-    * Coding challenges
-
+    * Face recognition
+      * Coding challenges
+    * Background
+      * Coding challenges
 3. [Miscellaneus](#miscellaneus)
-  * Heroku
-  * CSS
-  * Sharingbutton.io
-  * ES6 features
-
+    * Heroku
+    * CSS
+    * Sharingbutton.io
+    * ES6 features
 4. [Credits](#credits)
 
 ## Concept
