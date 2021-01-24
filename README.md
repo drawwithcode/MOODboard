@@ -21,7 +21,7 @@ MOODboard was developed by:
 
 ## Project Idea
 
- The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
 ## Interaction
 
@@ -81,7 +81,8 @@ drawPotato() {
 ```
 
 #### Palette
-![Palette](readme/palettemoodboard.png)<br>
+
+![Palette](readme/palettemoodboard.png)
 
 
 #### Coding
