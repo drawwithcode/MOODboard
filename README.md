@@ -39,11 +39,11 @@ this._drawElement(this.rightEye);
 this._drawElement(this.mouth);
 noStroke();
 ```
-####Palette
+#### Palette
 ![Palette](readme/palettemoodboard.png)<br>
 
 
-####Coding
+#### Coding
 
 
 When socket receives the data it assigns it to the corresponding player.
