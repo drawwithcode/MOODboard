@@ -52,7 +52,7 @@ console.log('Server is running.\n' +
  *
  * @type {number}
  */
-const playersPerRoom = 2;
+const playersPerRoom = 12;
 
 const rooms = [];
 
