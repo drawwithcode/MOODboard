@@ -8,7 +8,7 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 MOODboard was developed by:
 * Michele Bruno
-* Federica Laurencio 
+* Federica Laurencio
 * Valentina Pallacci
 * Federico Pozzi
 
@@ -21,7 +21,7 @@ MOODboard was developed by:
 
 ## Project Idea
 
- The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
 ## Interaction
 
@@ -29,7 +29,7 @@ MOODboard was developed by:
 
 ## Design challenges
 
-## Face recognition 
+## Face recognition
 
 The face-api.js library was used for facial recognition.
 
