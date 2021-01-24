@@ -59,8 +59,9 @@ class Player {
     push();
     this.drawPotato();
     pop();
+
     noFill();
-    // rect(0, 0, this.dimensions.w, this.dimensions.h);
+
     strokeWeight(5);
     this._drawElement(this.leftEyebrow, false);
     this._drawElement(this.rightEyebrow, false);
@@ -71,10 +72,10 @@ class Player {
     noStroke();
 
     if (this.id === socket.id) {
-      fill('black');
+      fill(palette['neutral']);
       textAlign(CENTER);
-      textSize(40);
-      text('you', -this.dimensions.w / 2 + 200, -this.dimensions.h / 2 + 370);
+      textSize(30);
+      text('YOU', this.dimensions.w / 2, this.dimensions.h + 40);
     }
 
     pop();
