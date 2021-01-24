@@ -42,37 +42,29 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 ### Project idea
 
-Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised,
-fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in
-real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The
-background will show a generative artwork that changes according to everyone's expression and the number of
-participants.
+Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
 
 ![Interaction](readme/interaction.gif)<br>
 
 ### Communication aim
 
-The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous
-surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
 ### Context of use
 
 ### Device
 
-We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the
-experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to
-achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
+We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
 
 ## Design and coding challenges
 
 ### Face recognition
 
-The face-api.js library was used for facial recognition.
+The [face-api.js](https://justadudewhohacks.github.io/face-api.js/docs/index.html#models-face-expression-recognition) library was used for facial recognition.
 
 #### Palette
 
-Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors
-that were commonly coded with the emotions used.
+Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
 
 ![Palette](readme/palettemoodboard.png)<br>
 
@@ -98,8 +90,7 @@ this._drawElement(this.mouth);
 noStroke();
 ```
 
-A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not
-get lost in the background texture. To stay in line with our sketchy visual identity, we used `noise()` function.
+A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture. To stay in line with our sketchy visual identity, we used `noise()` function.
 
 ```js
 class Player {
@@ -175,8 +166,7 @@ If face-api.js finds a face but has a degree of certainty lower than the thresho
 
 ```
 
-Initially, face-api recognised many expressions as neutral. We therefore tried to **decrease the neutrals**, favouring
-other expressions:
+Initially, face-api recognised many expressions as neutral. We therefore tried to **decrease the neutrals**, favouring other expressions:
 
 ```js
 for (const feeling of feelings) {
@@ -189,8 +179,7 @@ for (const feeling of feelings) {
 }
 ```
 
-The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated
-on the basis of gravity points that apply forces to points with the same feeling.
+The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated on the basis of gravity points that [apply forces to points](https://www.youtube.com/watch?v=MkXoQVWRDJs&ab_channel=TheCodingTrain) with the same feeling.
 
 This class generates the **centres of gravity** of the emotions.
 
@@ -276,30 +265,18 @@ Set the position of the **centre of gravity**.
 
 ### Background
 
-For the background, we decided very early in development that we wanted to design a **responsive generative artwork**.
-The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve
-this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given
-time.
+For the background, we decided very early in development that we wanted to design a **responsive generative artwork**.The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given time.
 
 ![Background](readme/background.gif)
-
 
 #### Coding challenges
 
 After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on [openprocessing.org](https://www.openprocessing.org/).
-The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in
-GLSL, a language that allows complex results with little computational load. In order to understand GLSL, we used The
-book of shaders and GLSL Sandbox. On GLSL Sandbox we found some shaders that had snippets that allowed us to get closer
-to our desired output. We used this sketch to be able to use the RGB color model instead of the default GLSL model. We
-then found this sketch which had an interesting parametric animation that we then modified to fit our needs.
+The [sketch](https://www.openprocessing.org/sketch/892960) seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in [GLSL](https://en.wikipedia.org/wiki/OpenGL_Shading_Language), a language that allows complex results with little computational load. In order to understand GLSL, we used *[The book of shaders](https://thebookofshaders.com/)* and [GLSL Sandbox](http://glslsandbox.com/). On GLSL Sandbox we found some shaders that had snippets that allowed us to get closer to our desired output. We used [this sketch](http://glslsandbox.com/e#70144.0) to be able to use the RGB color model instead of the default GLSL model. We then found [this sketch](http://glslsandbox.com/e#68868.0) which had an interesting parametric animation that we then modified to fit our needs.
 
-The last hurdle we had was to pass information between the sketch and the shader. Thankfully in *The book of shaders* we
-discovered the possibility to set a uniform from an external code. On the p5js documentation then we finally found the
-method to connect shaders and p5js sketches.
+The last hurdle we had was to pass information between the sketch and the shader. Thankfully in *The book of shaders* we discovered the possibility to set a uniform from an external code. On the p5js documentation then we finally found the [method](https://p5js.org/examples/3d-passing-shader-uniforms.html) to connect shaders and p5js sketches.
 
-Using the data from Face.api we created **seven uniforms** connected with each emotion. In the shader the emotions are
-shown as an array of horizontal stripes that grow with the variable. The stripes are then animated with a **parametric
-equation**.
+Using the data from Face.api we created **seven uniforms** connected with each emotion. In the shader the emotions are shown as an array of horizontal stripes that grow with the variable. The stripes are then animated with a **parametric equation**.
 
 ```glsl
 uniform float time;
