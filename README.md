@@ -1,7 +1,7 @@
 
 # MOODboard
 
-MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano.
+MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
 If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
 
 ### Team
@@ -19,7 +19,7 @@ MOODboard was developed by:
 4. [Miscellaneus](#miscellaneus)
 5. [Teams](#teams)
 
-### Project Idea
+## Project Idea
 
  The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
@@ -49,6 +49,37 @@ this._drawElement(this.rightEye);
 this._drawElement(this.mouth);
 noStroke();
 ```
+
+A *white background* was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture.
+
+```
+drawPotato() {
+ // const points = this.jaw;
+
+ const larg = this.dimensions.w;
+ const alt = this.dimensions.h;
+
+ push();
+ noStroke();
+ /**
+  * alt/2.5 for centring the face
+  */
+ translate(larg / 2, alt / 2.5);
+ scale(1, 1.2);
+
+ const noiseDivider = 3;
+ beginShape();
+ for (let i = 0; i < 15; i++) {
+   const a = TWO_PI * i / 15;
+   const noiseX = (noise(a, frameCount / 20) - .5) / noiseDivider;
+   const noiseY = (noise(a, frameCount / 20) - .5) / noiseDivider;
+   vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
+ }
+ endShape(CLOSE);
+ pop();
+
+```
+
 #### Palette
 ![Palette](readme/palettemoodboard.png)<br>
 
