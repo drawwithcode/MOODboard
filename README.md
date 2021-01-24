@@ -19,6 +19,7 @@ If you want to know more about the course visit [this website](https://drawwithc
 * [Federico Pozzi](https://federicopozzi.github.io/portfolio/index.html)
 
 ### Table of Contents
+0. [How to run](#how-to-run)
 1. [Concept](#concept)
     * Project idea
     * Communication aim
@@ -35,6 +36,13 @@ If you want to know more about the course visit [this website](https://drawwithc
     * Sharingbutton.io
     * ES6 features
 4. [Credits](#credits)
+
+## How to run
+
+Be sure to have [node and npm](https://nodejs.org/) installed.
+
+* Install node dependencies: `npm install`
+* Run local server: `node server.js`
 
 ## Concept
 
@@ -116,7 +124,8 @@ class Player {
 }
 ```
 
-We gave shape to the landmarks by connecting them with a stroke.
+We gave shape to the landmarks by connecting them with a stroke. 
+We used the same function to avoid code repetitions.
 
 ```js
 const col = palette[this.feeling];
@@ -145,8 +154,8 @@ function onPlayerLeft(id) {
 }
 ```
 
-Detect performs facial recognition.
-
+Face detection is triggered through `detectFace()` function. It runs recursively, with a little
+delay in some cases to avoid client overload.
 ```js
 async function detectFace() {
   if (!me) {
@@ -159,13 +168,16 @@ async function detectFace() {
 
   detection = await faceapi.detectSingleFace(video.elt,
     detectionOptions).withFaceLandmarks().withFaceExpressions();
+}
 ```
 
 If face-api.js finds a face but has a degree of certainty lower than the threshold value, detection starts again.
+When the detection runs correctly, the result is assigned to detection (which actually is a `setter` function) of `me`.
+After that, other players connected are updated through socket.
 
 ```js
-  if (detection) {
-  const threshold = .8;
+if (detection) {
+  const threshold = .9;
 
   const score = detection.detection._score;
 
@@ -177,7 +189,7 @@ If face-api.js finds a face but has a degree of certainty lower than the thresho
   me.detection = detection;
 
   me.broadcast();
-
+}
 ```
 
 Initially, face-api recognised many expressions as neutral. We therefore tried to **decrease the neutrals**, favouring
@@ -196,9 +208,9 @@ for (const feeling of feelings) {
 
 #### Position of the avatar
 
-The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated
-on the basis of gravity points
-that [apply forces to points](https://www.youtube.com/watch?v=MkXoQVWRDJs&ab_channel=TheCodingTrain) with the same
+The position of the avatar is calculated by the browser of each user, making the site faster and avoiding lagging. 
+The position is calculated on the basis of gravity points
+that [apply forces to players](https://www.youtube.com/watch?v=MkXoQVWRDJs&ab_channel=TheCodingTrain) with the same
 feeling.
 
 This class generates the **centres of gravity** of the emotions.
@@ -245,13 +257,14 @@ class GravityPoint {
     text(this.feeling.toUpperCase(), this.pos.x, this.pos.y + 20);
     pop();
   }
+}
 ```
 
-Set the position of the **centre of gravity**.
+The position of the **centre of gravity** are created in this class method, which is also run 
+by `windowResized()`.
 
 ```js
-  setPosition()
-{
+setPosition() {
   let hUnit = height / 8;
 
   switch (this.feeling) {
@@ -330,8 +343,7 @@ class Room {
 
 ### Background
 
-For the background, we decided very early in development that we wanted to design a **responsive generative artwork**
-.The artwork needed to further the connection between the users and their algorithmic representation. In order to
+For the background, we decided very early in development that we wanted to design a **responsive generative artwork**. The artwork needed to further the connection between the users and their algorithmic representation. In order to
 achieve this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any
 given time.
 
@@ -427,7 +439,7 @@ setInterval(function() {
 In the p5 `draw()` function, the interpolated values are set to the shader with the `setUniform()` function.
 
 ```js
- const {prev, next, lastTimestamp, interval} = summedFeelings;
+const {prev, next, lastTimestamp, interval} = summedFeelings;
 if (prev && next) {
   bg.shader(bgShader);
   const now = Date.now();
@@ -439,14 +451,13 @@ if (prev && next) {
   bg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   bgShader.setUniform('time', millis() / 1000.0);
 }
-}
 ```
 
 The user also has the option of **saving** the background.
 
 ```html
-
-<button class="menu btn btn-text p-0 cool-underlined" onclick="bg.saveCanvas('MOODboard', 'png')">Save</button>
+<button class="menu btn btn-text p-0 cool-underlined" 
+        onclick="bg.saveCanvas('MOODboard', 'png')">Save</button>
 ```
 
 ## Miscellaneus
@@ -577,7 +588,7 @@ function onPlayerUpdated(id, feelings, landmarks, dimensions) {
 #### For...of
 
 [For...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) was used to improve
-the readability and to iterate `Map` objects.
+the readability and to iterate `Map` and other iterables objects.
 
 ```js
 for (const feeling of feelings) {
@@ -587,12 +598,13 @@ for (const feeling of feelings) {
 
 ## Credits
 
-Font: [Karrik](https://velvetyne.fr/fonts/karrik/)
-Libraries: P5js
+Font: [Karrik](https://velvetyne.fr/fonts/karrik/).
 
-## How to run
+Libraries and frameworks: 
 
-Be sure to have node installed: https://nodejs.org/
-
-* install node dependencies: `npm install`
-* run local server: `node server.js`
+* [p5.js](https://p5js.org/)
+* [face-api.js](https://github.com/justadudewhohacks/face-api.js/)
+* [socket.io](https://socket.io/)
+* [Bootstrap 5](https://getbootstrap.com/)
+* [uuid](https://github.com/uuidjs/uuid)
+* [Express](https://expressjs.com/it/)
