@@ -1,7 +1,7 @@
 # MOODboard
 
-MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
-If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
+**MOODboard** is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
+If you want to know more about the course visit [this website](https://drawwithcode.github.io/2020/).
 
 ### Faculty
 
@@ -11,10 +11,10 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 ### Team
 
-* Michele Bruno
-* Federica Laurencio
-* Valentina Pallacci
-* Federico Pozzi
+* [Michele Bruno](https://github.com/michelebruno)
+* [Federica Laurencio](https://federicalaurencio.bss.design/)
+* [Valentina Pallacci](https://www.linkedin.com/in/valentina-pallacci/)
+* [Federico Pozzi](https://federicopozzi.github.io/portfolio/index.html)
 
 ### Table of Contents
 
@@ -42,7 +42,7 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 ### Project idea
 
-Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
+Users can see an **algorithmic representation** of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in **real-time**. Every user will be positioned according to their expression, creating **groups** based on shared emotion. The background will show a **generative artwork** that changes according to everyone's expression and the number of participants.
 
 ![Interaction](readme/interaction.gif)<br>
 
@@ -54,7 +54,7 @@ The main goal was to create an **interactive experience** where users can reconn
 
 ### Device
 
-We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
+We preferred to stick to **desktop or landscape mobile** because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
 
 ## Design and coding challenges
 
@@ -376,10 +376,18 @@ The user also has the option of **saving** the background.
 The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github
 repository facilitating the work and development of the web app.
 
+
+### Bootstrap
+
+In order to organize the structure of the webpage we used this css framework that helped and made much more easy this side of the project.
+
+
 ### CSS
 
 In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and
 **dimension** of texts.
+
+![Rotation](readme/button.gif)
 
 To style the interaction buttons to start the game, a **rotation animation** in css was used.
 
@@ -394,9 +402,45 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 }
 ```
 
+![about](readme/about.gif)
+
 Also the animations of the About and Save buttons are made in CSS.
 
-![about](readme/about.gif)<br>
+```
+bg-will-be-animated .bg-animation {
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  background-color: #FEBE43;
+  border-radius: 50%;
+  transform: scale(0);
+  z-index: -1;
+  transition: 1s;
+  transition-timing-function: cubic-bezier(0.13, 0, 0, 1);
+}
+
+.bg-will-be-animated:hover .bg-animation {
+  transform: scale(15);
+  transition: .6s;
+}
+
+.bg-will-be-animated:hover .cool-underlinedr::before
+{
+  visibility: visible;
+  width: 0;
+}
+.bg-will-be-animated .cool-underlinedr::before  {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -1px;
+  right: 0;
+  background-color: black;
+  transition: .6s ease-in-out;
+}
+```
 
 
 ### Sharingbutton.io
@@ -459,7 +503,8 @@ for (const feeling of feelings) {
 
 ## Credits
 
-Font: Karrik Libraries: P5js
+Font: [Karrik](https://velvetyne.fr/fonts/karrik/)
+Libraries: P5js
 
 ## How to run
 
