@@ -1,41 +1,60 @@
 
 # MOODboard
-
 MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
 If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
 
-### Team
+### Faculty
+* Michele Mauri
+* Andrea Benedetti
+* Tommaso Elli
 
-MOODboard was developed by:
+### Team
 * Michele Bruno
 * Federica Laurencio
 * Valentina Pallacci
 * Federico Pozzi
 
 ### Table of Contents
-1. [Project Idea](#project-idea)
-2. [Interaction](#interaction)
-3. [Key features](#key-features)
-4. [Miscellaneus](#miscellaneus)
-5. [Teams](#teams)
 
-## Project Idea
+1. [Concept](#project-idea)
+   * Project idea
+   * Communication aim
+   * Context of use
+   * Device
 
+2. [Design and coding challenge](#interaction)
+   * Face recognition
+     * Coding
+   * Background
+     * Coding
+
+3. [Miscellaneus](#miscellaneus)
+4. [Credits](#credits)
+
+## Concept
+
+### Project idea
+
+Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
+
+### Communication aim
 The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
-## Interaction
+### Context of use
 
- Users can see an **algorithmic representation** of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in **real-time**. Every user will be positioned according to their expression, creating **groups** based on shared emotion. The background will show a **generative artwork** that changes according to everyone's expression and the number of participants.
+### Device
+We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io we used other libraries to achieve our goals, in particular face-api.js.
+
 
 ## Design challenges
 
-## Face recognition
+### Face recognition
 
 The face-api.js library was used for facial recognition.
 
 ### Coding
 
-### Algorithmic representation
+#### Algorithmic representation
 
 First, we gave shape to the landmarks by connecting them with a stroke.
 ```
@@ -363,7 +382,7 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 
 ### Sharingbutton.io
 
-To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates 
+To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates
 HTML and CSS strings to be embedded in the website.
 ```
 <!-- Sharingbutton WhatsApp -->
@@ -402,6 +421,11 @@ for (const feeling of feelings) {
  gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
 }
 ```
+
+## Credits
+
+Font: Karrik
+Libraries: P5js
 
 
 ## How to run
