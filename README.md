@@ -365,8 +365,8 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 
 ### Sharingbutton.io
 
-To create the **sharing button** for the social, this online tool was used which generates html and css strings to be embedded in the website.
-
+To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates 
+HTML and CSS strings to be embedded in the website.
 ```
 <!-- Sharingbutton WhatsApp -->
 <a class="resp-sharing-button__link" href="whatsapp://send?text=I&#x27;m%20inviting%20you%20to%20my%20shared%20emotions!%20https%3A%2F%2Fffmv-moodboard.herokuapp.com%2F" target="_blank" rel="noopener" aria-label="">
@@ -375,164 +375,13 @@ To create the **sharing button** for the social, this online tool was used which
  </div>
  </div>
 </a>
-
-
-.resp-sharing-button__link,
-.resp-sharing-button__icon {
- display: inline-block
-}
-
-.resp-sharing-button__link {
- text-decoration: none;
- color: #fff;
- margin: 0.5em
-}
-
-.resp-sharing-button {
- border-radius: 5px;
- transition: 25ms ease-out;
- padding: 0.5em 0.75em;
- font-family: Helvetica Neue,Helvetica,Arial,sans-serif
-}
-
-.resp-sharing-button__icon svg {
- width: 1em;
- height: 1em;
- margin-right: 0.4em;
- vertical-align: top
-}
-
-.resp-sharing-button--small svg {
- margin: 0;
- vertical-align: middle
-}
-
-/* Non solid icons get a stroke */
-.resp-sharing-button__icon {
- stroke: #fff;
- fill: none
-}
-
-/* Solid icons get a fill */
-.resp-sharing-button__icon--solid,
-.resp-sharing-button__icon--solidcircle {
- fill: #fff;
- stroke: none
-}
-
-.resp-sharing-button--twitter {
- background-color: #55acee
-}
-
-.resp-sharing-button--twitter:hover {
- background-color: #2795e9
-}
-
-.resp-sharing-button--pinterest {
- background-color: #bd081c
-}
-
-.resp-sharing-button--pinterest:hover {
- background-color: #8c0615
-}
-
-.resp-sharing-button--facebook {
- background-color: #3b5998
-}
-
-.resp-sharing-button--facebook:hover {
- background-color: #2d4373
-}
-
-.resp-sharing-button--tumblr {
- background-color: #35465C
-}
-
-.resp-sharing-button--tumblr:hover {
- background-color: #222d3c
-}
-
-.resp-sharing-button--reddit {
- background-color: #5f99cf
-}
-
-.resp-sharing-button--reddit:hover {
- background-color: #3a80c1
-}
-
-.resp-sharing-button--google {
- background-color: #dd4b39
-}
-
-.resp-sharing-button--google:hover {
- background-color: #c23321
-}
-
-.resp-sharing-button--linkedin {
- background-color: #0077b5
-}
-
-.resp-sharing-button--linkedin:hover {
- background-color: #046293
-}
-
-.resp-sharing-button--email {
- background-color: #777
-}
-
-.resp-sharing-button--email:hover {
- background-color: #5e5e5e
-}
-
-.resp-sharing-button--xing {
- background-color: #1a7576
-}
-
-.resp-sharing-button--xing:hover {
- background-color: #114c4c
-}
-
-.resp-sharing-button--whatsapp {
- background-color: #25D366
-}
-
-.resp-sharing-button--whatsapp:hover {
- background-color: #1da851
-}
-
-.resp-sharing-button--hackernews {
- background-color: #FF6600
-}
-.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
-
-.resp-sharing-button--vk {
- background-color: #507299
-}
-
-.resp-sharing-button--vk:hover {
- background-color: #43648c
-}
-
-.resp-sharing-button--whatsapp {
- background-color: #25D366;
- border-color: #25D366;
-}
-
-.resp-sharing-button--whatsapp:hover,
-.resp-sharing-button--whatsapp:active {
- background-color: #1DA851;
- border-color: #1DA851;
-}
-
-.resp-sharing-button--telegram {
- background-color: #54A9EB;
-}
-
-.resp-sharing-button--telegram:hover {
- background-color: #4B97D1;}
 ```
 
-### New java features
+The user will have a custom default message to invite his/her friends.
+
+![Telegram image](readme/telegram.jpg)
+
+### ES6 features
 
 #### Map
 The [Map object](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map) is a simple key/value map. It allows variables to be assigned a value, for example the socked.id of the players.
@@ -555,8 +404,6 @@ for (const feeling of feelings) {
  gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
 }
 ```
-
-
 
 
 ## How to run
