@@ -147,7 +147,7 @@ The position of the avatar is calculated by the browser of each user, making the
 This class generates the **centres of gravity** of the emotions.
 
 ```
-class FeelingGravity {
+class GravityPoint {
   constructor({feeling}) {
     this.feeling = feeling;
     this.setPosition();
@@ -547,7 +547,7 @@ const player = players.get(id);
 
 ```
 for (const feeling of feelings) {
- gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
+ gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
 }
 ```
 

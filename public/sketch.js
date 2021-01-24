@@ -74,7 +74,7 @@ const bg = new p5((sketck) => {
 
 /**
  * These are the points in
- * @type {Map<string, FeelingGravity>}
+ * @type {Map<string, GravityPoint>}
  */
 const gravityPoints = new Map();
 
@@ -157,7 +157,7 @@ async function setup() {
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
-    gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
+    gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
   }
 
   // Loads facepi models

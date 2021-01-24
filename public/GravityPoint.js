@@ -1,7 +1,7 @@
 /**
  * Questa classe genera i centri di gravità delle emozioni.
  */
-class FeelingGravity {
+class GravityPoint {
   constructor({feeling}) {
     this.feeling = feeling;
     this.setPosition();
