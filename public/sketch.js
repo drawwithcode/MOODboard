@@ -16,7 +16,7 @@ let me;
 const players = new Map;
 
 // eslint-disable-next-line prefer-const
-let DEBUG_MODE = true;
+let DEBUG_MODE = false;
 let started = false;
 
 let detection;
