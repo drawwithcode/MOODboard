@@ -72,8 +72,6 @@ class Player {
       textAlign(CENTER);
       textSize(40);
       text('you', -this.dimensions.w / 2 +200, -this.dimensions.h / 2 + 370 );
-    } else {
-      console.log('ciao');
     }
 
     pop();
