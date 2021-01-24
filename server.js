@@ -33,8 +33,9 @@ function newConnection(socket) {
   });
 
   socket.on('disconnect', function() {
-    socket.to(room.id).broadcast.emit('player.left', socket.id);
     room.removePlayer(socket);
+
+    socket.to(room.id).broadcast.emit('player.left', socket.id);
   });
 }
 
@@ -124,8 +125,12 @@ class Room {
 
   removePlayer(player) {
     const index = this.getPlayerIndex(player);
+
     if (index > -1) {
-      this.players.slice(index, 1);
+      this.players = this.players.slice(index, 1);
+      console.debug('Player left.', 'Is room full?', this.isRoomFull() );
+    } else {
+      console.debug('Player was not in this room.');
     }
   }
   /**
