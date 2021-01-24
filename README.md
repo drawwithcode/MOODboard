@@ -1,6 +1,6 @@
 # MOODboard
 
-MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
+**MOODboard** is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
 If you want to know more about the course visit [this website](https://drawwithcode.github.io/2020/).
 
 ### Faculty
@@ -42,7 +42,7 @@ If you want to know more about the course visit [this website](https://drawwithc
 
 ### Project idea
 
-Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
+Users can see an **algorithmic representation** of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in **real-time**. Every user will be positioned according to their expression, creating **groups** based on shared emotion. The background will show a **generative artwork** that changes according to everyone's expression and the number of participants.
 
 ![Interaction](readme/interaction.gif)<br>
 
