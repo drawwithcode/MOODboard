@@ -54,7 +54,7 @@ The main goal was to create an **interactive experience** where users can reconn
 
 ### Device
 
-We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
+We preferred to stick to **desktop or landscape mobile** because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
 
 ## Design and coding challenges
 
@@ -465,7 +465,8 @@ for (const feeling of feelings) {
 
 ## Credits
 
-Font: Karrik Libraries: P5js
+Font: [Karrik](https://velvetyne.fr/fonts/karrik/)
+Libraries: P5js
 
 ## How to run
 
