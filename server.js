@@ -34,6 +34,7 @@ function newConnection(socket) {
 
   socket.on('disconnect', function() {
     socket.to(room.id).broadcast.emit('player.left', socket.id);
+    room.removePlayer(socket);
   });
 }
 
@@ -92,13 +93,41 @@ class Room {
   }
 
   isRoomFull() {
-    return this.connectedPlayers.length >= roomPlayers;
+    return this.players.length >= roomPlayers;
   }
 
   isPlayerIn(player) {
     return this.players.findIndex((p) => p.id === player.id) !== -1;
   }
+  /**
+   *
+   * @param {string|int|Socket} player
+   * @return {number}
+   */
+  getPlayerIndex(player) {
+    // Checks if it's already the index and returns it.
+    if (typeof player === 'number') {
+      return player < this.players.length ? player : -1;
+    }
 
+    let id;
+
+    if (typeof player === 'string') {
+      id = player;
+    } else if (typeof player === 'object' && player.id) {
+      id = player.id;
+    }
+
+    return this.players.findIndex((p) => p.id === id);
+  }
+
+
+  removePlayer(player) {
+    const index = this.getPlayerIndex(player);
+    if (index > -1) {
+      this.players.slice(index, 1);
+    }
+  }
   /**
    *
    * @param {Socket} player
