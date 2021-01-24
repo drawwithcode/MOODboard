@@ -72,7 +72,7 @@ const bg = new p5((sketck) => {
 const gravityPoints = new Map();
 
 /**
- * Esegue il riconoscimento facciale.
+ * Performs face detection.
  *
  * La funzione è ricorsiva, chiama se stessa.
  *

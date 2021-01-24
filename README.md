@@ -60,8 +60,8 @@ surfers through their emotions, to enable speculation around the theme of **sent
 ### Device
 
 We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the
-experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io we used other libraries to
-achieve our goals, in particular face-api.js.
+experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to
+achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
 
 ## Design challenges
 
@@ -99,13 +99,11 @@ noStroke();
 ```
 
 A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not
-get lost in the background texture.
+get lost in the background texture. To stay in line with our sketchy visual identity, we used `noise()` function.
 
 ```js
 class Player {
   drawPotato() {
-    // const points = this.jaw;
-
     const larg = this.dimensions.w;
     const alt = this.dimensions.h;
 
@@ -403,8 +401,8 @@ repository facilitating the work and development of the web app.
 
 ### CSS
 
-In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and **
-dimension** of texts.
+In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and
+**dimension** of texts.
 
 To style the interaction buttons to start the game, a **rotation animation** in css was used.
 
