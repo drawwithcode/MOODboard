@@ -8,7 +8,7 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 MOODboard was developed by:
 * Michele Bruno
-* Federica Laurencio 
+* Federica Laurencio
 * Valentina Pallacci
 * Federico Pozzi
 
@@ -29,11 +29,15 @@ The main goal was to create an **interactive experience** where users can reconn
 
 ## Design challenges
 
+## Face recognition
+
+The face-api.js library was used for facial recognition.
+
+### Coding
+
 ### Algorithmic representation
 
 First, we gave shape to the landmarks by connecting them with a stroke.
-Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
-
 ```
 const col = palette[this.feeling];
 stroke(col);
@@ -50,7 +54,7 @@ this._drawElement(this.mouth);
 noStroke();
 ```
 
-A *white background* was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture.
+A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture.
 
 ```
 drawPotato() {
@@ -81,11 +85,12 @@ drawPotato() {
 ```
 
 #### Palette
+Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
 
-![Palette](readme/palettemoodboard.png)
+![Palette](readme/palettemoodboard.png)<br>
 
 
-#### Coding
+
 
 
 When socket receives the data it assigns it to the corresponding player.
