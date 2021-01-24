@@ -42,6 +42,8 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
 
+![Interaction](readme/interaction.gif)<br>
+
 ### Communication aim
 The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
