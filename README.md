@@ -445,7 +445,7 @@ bg-will-be-animated .bg-animation {
 
 ### Sharingbutton.io
 
-To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates
+To create the **sharing button** for the social, we used an [online tool](https://sharingbuttons.io/) which generates
 HTML and CSS strings to be embedded in the website.
 
 ```html
