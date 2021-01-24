@@ -235,6 +235,7 @@ function windowResized() {
 }
 
 function onPlayerUpdated(id, feelings, landmarks, dimensions) {
+  // Initiates a player if there isn't one from this socket id.
   if (!players.has(id)) {
     players.set(id, new Player({id, x: width / 2, y: height / 2}));
   }
@@ -244,7 +245,6 @@ function onPlayerUpdated(id, feelings, landmarks, dimensions) {
   player.expressions = feelings;
   player.dimensions = dimensions;
 
-  // Fingiamo che sia un input di faceapi
   player.landmarks = {
     _positions: landmarks,
   };

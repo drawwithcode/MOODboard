@@ -19,6 +19,9 @@ class Player {
     };
   }
 
+  /**
+   * Sets velocity to zero.
+   */
   stop() {
     this.vel.set(0, 0);
   }
@@ -71,7 +74,7 @@ class Player {
       fill('black');
       textAlign(CENTER);
       textSize(40);
-      text('you', -this.dimensions.w / 2 +200, -this.dimensions.h / 2 + 370 );
+      text('you', -this.dimensions.w / 2 + 200, -this.dimensions.h / 2 + 370);
     }
 
     pop();
@@ -176,15 +179,13 @@ class Player {
   }
 
   drawPotato() {
-    // const points = this.jaw;
-
     const larg = this.dimensions.w;
     const alt = this.dimensions.h;
 
     push();
     noStroke();
     /**
-     * alt/2.5 per centrare un po'
+     * alt/2.5 for centering face
      */
     translate(larg / 2, alt / 2.5);
     scale(1, 1.2);

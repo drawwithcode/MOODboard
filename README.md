@@ -1,14 +1,16 @@
-
 # MOODboard
+
 MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
 If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
 
 ### Faculty
+
 * Michele Mauri
 * Andrea Benedetti
 * Tommaso Elli
 
 ### Team
+
 * Michele Bruno
 * Federica Laurencio
 * Valentina Pallacci
@@ -17,50 +19,60 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 ### Table of Contents
 
 1. [Concept](#concept)
-   * Project idea
-   * Communication aim
-   * Context of use
-   * Device
+  * Project idea
+  * Communication aim
+  * Context of use
+  * Device
 
 2. [Design challenges](#Design-challenges)
-   * Face recognition
-     * Coding challenges
-   * Background
-     * Coding challenges
+  * Face recognition
+    * Coding challenges
+  * Background
+    * Coding challenges
 
 3. [Miscellaneus](#miscellaneus)
-   * Heroku
-   * CSS
-   * Sharingbutton.io
-   * ES6 features
-   
+  * Heroku
+  * CSS
+  * Sharingbutton.io
+  * ES6 features
+
 4. [Credits](#credits)
 
 ## Concept
 
 ### Project idea
 
-Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
+Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised,
+fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in
+real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The
+background will show a generative artwork that changes according to everyone's expression and the number of
+participants.
 
 ![Interaction](readme/interaction.gif)<br>
 
 ### Communication aim
-The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+
+The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous
+surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
 ### Context of use
 
 ### Device
-We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io we used other libraries to achieve our goals, in particular face-api.js.
 
+We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the
+experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io we used other libraries to
+achieve our goals, in particular face-api.js.
 
 ## Design challenges
 
 ### Face recognition
 
-The face-api.js library was used for facial recognition. 
+The face-api.js library was used for facial recognition.
 
 #### Palette
-Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
+
+Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors
+that were commonly coded with the emotions used.
 
 ![Palette](readme/palettemoodboard.png)<br>
 
@@ -69,7 +81,8 @@ Then we decided on a palette that resonated with the mood we envisioned for the 
 #### Algorithmic representation
 
 First, we gave shape to the landmarks by connecting them with a stroke.
-```
+
+```js
 const col = palette[this.feeling];
 stroke(col);
 
@@ -85,40 +98,44 @@ this._drawElement(this.mouth);
 noStroke();
 ```
 
-A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture.
+A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not
+get lost in the background texture.
 
-```
-drawPotato() {
- // const points = this.jaw;
+```js
+class Player {
+  drawPotato() {
+    // const points = this.jaw;
 
- const larg = this.dimensions.w;
- const alt = this.dimensions.h;
+    const larg = this.dimensions.w;
+    const alt = this.dimensions.h;
 
- push();
- noStroke();
- /**
-  * alt/2.5 for centring the face
-  */
- translate(larg / 2, alt / 2.5);
- scale(1, 1.2);
+    push();
+    noStroke();
+    /**
+     * alt/2.5 for centring the face
+     */
+    translate(larg / 2, alt / 2.5);
+    scale(1, 1.2);
 
- const noiseDivider = 3;
- beginShape();
- for (let i = 0; i < 15; i++) {
-   const a = TWO_PI * i / 15;
-   const noiseX = (noise(a, frameCount / 20) - .5) / noiseDivider;
-   const noiseY = (noise(a, frameCount / 20) - .5) / noiseDivider;
-   vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
- }
- endShape(CLOSE);
- pop();
-
+    const noiseDivider = 3;
+    beginShape();
+    for (let i = 0; i < 15; i++) {
+      const a = TWO_PI * i / 15;
+      const noiseX = (noise(a, frameCount / 20) - .5) / noiseDivider;
+      const noiseY = (noise(a, frameCount / 20) - .5) / noiseDivider;
+      vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
+    }
+    endShape(CLOSE);
+    pop();
+  }
+}
 ```
 
 When socket receives the data it assigns it to the corresponding player.
 
-```
+```js
 socket.on('player.left', onPlayerLeft);
+
 function onPlayerLeft(id) {
   console.info('Player ' + id + ' left');
   players.delete(id);
@@ -126,7 +143,8 @@ function onPlayerLeft(id) {
 ```
 
 Detect performs facial recognition.
-```
+
+```js
 async function detectFace() {
   if (!me) {
     console.warn('Probabilmente non c\'è ancora una connessione al server. Riproverò fra un secondo.');
@@ -137,43 +155,48 @@ async function detectFace() {
   }
 
   detection = await faceapi.detectSingleFace(video.elt,
-      detectionOptions).withFaceLandmarks().withFaceExpressions();
+    detectionOptions).withFaceLandmarks().withFaceExpressions();
 ```
+
 If face-api.js finds a face but has a degree of certainty lower than the threshold value, detection starts again.
 
-```
+```js
   if (detection) {
-        const threshold = .8;
+  const threshold = .8;
 
-    const score = detection.detection._score;
+  const score = detection.detection._score;
 
-    if (score < threshold) {
-      DEBUG_MODE && console.debug('Uncertain detection');
-      return detectFace();
-    }
+  if (score < threshold) {
+    DEBUG_MODE && console.debug('Uncertain detection');
+    return detectFace();
+  }
 
-    me.detection = detection;
+  me.detection = detection;
 
-    me.broadcast();
-
-```
-Initially, face-api recognised many expressions as neutral. We therefore tried to **decrease the neutrals**, favouring other expressions:
+  me.broadcast();
 
 ```
+
+Initially, face-api recognised many expressions as neutral. We therefore tried to **decrease the neutrals**, favouring
+other expressions:
+
+```js
 for (const feeling of feelings) {
- const value = feeling === 'neutral' ? expressions[feeling] * .4 : expressions[feeling];
+  const value = feeling === 'neutral' ? expressions[feeling] * .4 : expressions[feeling];
 
- if (value > this.feelingValue) {
-   this.feeling = feeling;
-   this.feelingValue = value;
- }
+  if (value > this.feelingValue) {
+    this.feeling = feeling;
+    this.feelingValue = value;
+  }
 }
 ```
-The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated on the basis of gravity points that apply forces to points with the same feeling.
+
+The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated
+on the basis of gravity points that apply forces to points with the same feeling.
 
 This class generates the **centres of gravity** of the emotions.
 
-```
+```js
 class GravityPoint {
   constructor({feeling}) {
     this.feeling = feeling;
@@ -216,59 +239,71 @@ class GravityPoint {
     pop();
   }
 ```
+
 Set the position of the **centre of gravity**.
 
-```
-  setPosition() {
-    let hUnit = height/8;
+```js
+  setPosition()
+{
+  let hUnit = height / 8;
 
-    switch (this.feeling) {
-      case 'neutral':
-        this.pos = createVector(4 * width / 8, 4 * hUnit);
-        break;
-      case 'surprised':
-        this.pos = createVector(1 * width / 8, 3 * hUnit);
-        break;
-      case 'happy':
-        this.pos = createVector(4 * width / 8, 1 * hUnit);
-        break;
-      case 'angry':
-        this.pos = createVector(7 * width / 8, 3 * hUnit);
-        break;
-      case 'disgusted':
-        this.pos = createVector(7 * width / 8, 5.5 * hUnit);
-        break;
-      case 'sad':
-        this.pos = createVector(4 * width / 8, 7 * hUnit);
-        break;
-      case 'fearful':
-        this.pos = createVector(1 * width / 8, 5.5 * hUnit);
-        break;
-      default:
-        console.warn(this.feeling + " is not a valid expression.")
-        break;
-    }
+  switch (this.feeling) {
+    case 'neutral':
+      this.pos = createVector(4 * width / 8, 4 * hUnit);
+      break;
+    case 'surprised':
+      this.pos = createVector(1 * width / 8, 3 * hUnit);
+      break;
+    case 'happy':
+      this.pos = createVector(4 * width / 8, 1 * hUnit);
+      break;
+    case 'angry':
+      this.pos = createVector(7 * width / 8, 3 * hUnit);
+      break;
+    case 'disgusted':
+      this.pos = createVector(7 * width / 8, 5.5 * hUnit);
+      break;
+    case 'sad':
+      this.pos = createVector(4 * width / 8, 7 * hUnit);
+      break;
+    case 'fearful':
+      this.pos = createVector(1 * width / 8, 5.5 * hUnit);
+      break;
+    default:
+      console.warn(this.feeling + " is not a valid expression.")
+      break;
   }
+}
 ```
 
 ### Background
 
-For the background, we decided very early in development that we wanted to design a **responsive generative artwork**. The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given time.
+For the background, we decided very early in development that we wanted to design a **responsive generative artwork**.
+The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve
+this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given
+time.
 
-![Background](readme/background.gif)<br>
+![Background](readme/background.gif)
+
 
 #### Coding challenges
 
-After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on openprocessing.org. The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in GLSL, a language that allows complex results with little computational load.
-In order to understand GLSL, we used The book of shaders and GLSL Sandbox.
-On GLSL Sandbox we found some shaders that had snippets that allowed us to get closer to our desired output. We used this sketch to be able to use the RGB color model instead of the default GLSL model. We then found this sketch which had an interesting parametric animation that we then modified to fit our needs.
+After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on openprocessing.org.
+The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in
+GLSL, a language that allows complex results with little computational load. In order to understand GLSL, we used The
+book of shaders and GLSL Sandbox. On GLSL Sandbox we found some shaders that had snippets that allowed us to get closer
+to our desired output. We used this sketch to be able to use the RGB color model instead of the default GLSL model. We
+then found this sketch which had an interesting parametric animation that we then modified to fit our needs.
 
-The last hurdle we had was to pass information between the sketch and the shader.  Thankfully in *The book of shaders* we discovered the possibility to set a uniform from an external code. On the p5js documentation then we finally found the method to connect shaders and p5js sketches.
+The last hurdle we had was to pass information between the sketch and the shader. Thankfully in *The book of shaders* we
+discovered the possibility to set a uniform from an external code. On the p5js documentation then we finally found the
+method to connect shaders and p5js sketches.
 
-Using the data from Face.api we created **seven uniforms** connected with each emotion. In the shader the emotions are shown as an array of horizontal stripes that grow with the variable.
-The stripes are then animated with a **parametric equation**.
+Using the data from Face.api we created **seven uniforms** connected with each emotion. In the shader the emotions are
+shown as an array of horizontal stripes that grow with the variable. The stripes are then animated with a **parametric
+equation**.
 
-```
+```glsl
 uniform float time;
 uniform vec2 resolution;
 
@@ -312,9 +347,10 @@ void main() {
 }
 ```
 
-In order to have a **smoother transition** between each background state, we interpolated the parameters from Face.api that we had previously set to refresh every second.
+In order to have a **smoother transition** between each background state, we interpolated the parameters from Face.api
+that we had previously set to refresh every second.
 
-```
+```js
 setInterval(function() {
  const nextFeelings = {
    neutral: 0, happy: 0, sad: 0, angry: 0, fearful: 0, disgusted: 0, surprised: 0,
@@ -333,9 +369,10 @@ setInterval(function() {
  summedFeelings.lastTimestamp = Date.now();
 }, summedFeelings.interval);
 ```
+
 In the p5 `draw()` function, the interpolated values are set to the shader with the `setUniform()` function.
 
-```
+```js
  const {prev, next, lastTimestamp, interval} = summedFeelings;
  if (prev && next) {
    bg.shader(bgShader);
@@ -350,9 +387,10 @@ In the p5 `draw()` function, the interpolated values are set to the shader with 
  }
 }
 ```
+
 The user also has the option of **saving** the background.
 
-```
+```html
 <button class="menu btn btn-text p-0 cool-underlined" onclick="bg.saveCanvas('MOODboard', 'png')">Save</button>
 ```
 
@@ -360,15 +398,17 @@ The user also has the option of **saving** the background.
 
 ### Heroku
 
-The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github repository facilitating the work and development of the web app.
+The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github
+repository facilitating the work and development of the web app.
 
 ### CSS
 
-In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and **dimension** of texts.
+In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and **
+dimension** of texts.
 
 To style the interaction buttons to start the game, a **rotation animation** in css was used.
 
-```
+```css
 @keyframes rotation {
  from {
    transform: rotate(359deg);
@@ -388,7 +428,8 @@ button about and save
 
 To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates
 HTML and CSS strings to be embedded in the website.
-```
+
+```html
 <!-- Sharingbutton WhatsApp -->
 <a class="resp-sharing-button__link" href="whatsapp://send?text=I&#x27;m%20inviting%20you%20to%20my%20shared%20emotions!%20https%3A%2F%2Fffmv-moodboard.herokuapp.com%2F" target="_blank" rel="noopener" aria-label="">
  <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
@@ -405,22 +446,37 @@ The user will have a custom default message to invite his/her friends.
 ### ES6 features
 
 #### Map
-The [Map object](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map) is a simple key/value map. It allows variables to be assigned a value, for example the socked.id of the players.
 
-```
-const players = new Map();
+The [Map object](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map) is a simple
+key/value map. It makes loops easier and allows to retrieve quickly an item by its key.
 
-if (!players.has(id)) {
- players.set(id, new Player({id, x: width / 2, y: height / 2}));
+```js
+// Earlier in code.
+// const players = new Map();
+
+function onPlayerUpdated(id, feelings, landmarks, dimensions) {
+  // Initiates a player if there isn't one from this socket id.
+  if (!players.has(id)) {
+    players.set(id, new Player({id, x: width / 2, y: height / 2}));
+  }
+
+  const player = players.get(id);
+
+  player.expressions = feelings;
+  player.dimensions = dimensions;
+
+  player.landmarks = {
+    _positions: landmarks,
+  };
 }
-
-const player = players.get(id);
 ```
 
 #### For...of
-[For...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) was used to improve the readability.
 
-```
+[For...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) was used to improve
+the readability and to iterate `Map` objects.
+
+```js
 for (const feeling of feelings) {
  gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
 }
@@ -428,9 +484,7 @@ for (const feeling of feelings) {
 
 ## Credits
 
-Font: Karrik
-Libraries: P5js
-
+Font: Karrik Libraries: P5js
 
 ## How to run
 
