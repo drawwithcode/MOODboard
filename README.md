@@ -1,15 +1,25 @@
-## Table of Contents
+
+# MOODboard
+
+MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano.
+If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
+
+### Team
+
+MOODboard was developed by:
+* Michele Bruno
+* Federica Laurencio 
+* Valentina Pallacci
+* Federico Pozzi
+
+### Table of Contents
 1. [Project Idea](#project-idea)
 2. [Interaction](#interaction)
 3. [Key features](#key-features)
 4. [Miscellaneus](#miscellaneus)
 5. [Teams](#teams)
 
-## MOODboard
-
-MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano.
-
-## Project Idea
+### Project Idea
 
  The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
 
@@ -510,10 +520,6 @@ for (const feeling of feelings) {
 ```
 
 
-## Team
-
-MOODboard was developed by:
-Michele Bruno, Federica Laurencio, Valentina Pallacci, Federico Pozzi
 
 
 ## How to run
