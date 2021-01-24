@@ -350,9 +350,7 @@ setInterval(function() {
 The user also has the option of **saving** the background.
 
 ```
-  sketck.takeScreenshot = function() {
-    sketck.saveCanvas('MOODboard', 'png');
-  };
+<button class="menu btn btn-text p-0 cool-underlined" onclick="bg.saveCanvas('MOODboard', 'png')">Save</button>
 ```
 
 ## Miscellaneus
