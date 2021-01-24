@@ -50,7 +50,12 @@ We preferred to stick to desktop or landscape mobile because on portrait mobile 
 
 ### Face recognition
 
-The face-api.js library was used for facial recognition.
+The face-api.js library was used for facial recognition. 
+
+#### Palette
+Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
+
+![Palette](readme/palettemoodboard.png)<br>
 
 ### Coding
 
@@ -102,15 +107,6 @@ drawPotato() {
  pop();
 
 ```
-
-#### Palette
-Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
-
-![Palette](readme/palettemoodboard.png)<br>
-
-
-
-
 
 When socket receives the data it assigns it to the corresponding player.
 
