@@ -22,11 +22,11 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
    * Context of use
    * Device
 
-2. [Design and coding challenge](#interaction)
+2. [Design challenges](#Design-challenges)
    * Face recognition
-     * Coding
+     * Coding challenges
    * Background
-     * Coding
+     * Coding challenges
 
 3. [Miscellaneus](#miscellaneus)
 4. [Credits](#credits)
@@ -57,7 +57,7 @@ Then we decided on a palette that resonated with the mood we envisioned for the 
 
 ![Palette](readme/palettemoodboard.png)<br>
 
-### Coding
+### Coding challenges
 
 #### Algorithmic representation
 
@@ -248,7 +248,7 @@ Set the position of the **centre of gravity**.
 
 For the background, we decided very early in development that we wanted to design a **responsive generative artwork**. The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given time.
 
-#### Coding
+#### Coding challenges
 
 After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on openprocessing.org. The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in GLSL, a language that allows complex results with little computational load.
 In order to understand GLSL, we used The book of shaders and GLSL Sandbox.
