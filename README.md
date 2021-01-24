@@ -419,7 +419,7 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 }
 ```
 
-button about and save 
+Also the animations of the About and Save buttons are made in CSS.
 
 ![about](readme/about.gif)<br>
 
