@@ -485,8 +485,8 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 
 Also the animations of the About and Save buttons are made in CSS.
 
-```
-bg-will-be-animated .bg-animation {
+```css
+.bg-will-be-animated .bg-animation {
   width: 20px;
   height: 20px;
   top: 50%;
