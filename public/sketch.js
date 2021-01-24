@@ -111,17 +111,8 @@ async function detectFace() {
     me.detection = detection;
 
     me.broadcast();
-
-    /**
-     * Mostriamo alcuni dati sull'espressione rilevata
-     *
-     * @todo cancellare quando non servirà
-     */
-    // textSize(20);
-    // text(me.feeling + ', ' + me.feelingValue.toFixed(3), video.width / 2,
-    //     video.height - 20);
   } else { // Nessuna rilevazione.
-    // DEBUG_MODE && console.warn('Invalid detection');
+    DEBUG_MODE && console.warn('Invalid detection');
   }
 
   return detectFace();
@@ -165,6 +156,7 @@ async function setup() {
 
     start.disabled = false;
     start.classList.remove('disabled');
+
     DEBUG_MODE && console.debug('Video is ready.');
   });
 
