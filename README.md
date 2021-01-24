@@ -1,7 +1,7 @@
 # MOODboard
 
 MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
-If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
+If you want to know more about the course visit [this website](https://drawwithcode.github.io/2020/).
 
 ### Faculty
 
@@ -11,10 +11,10 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 ### Team
 
-* Michele Bruno
-* Federica Laurencio
-* Valentina Pallacci
-* Federico Pozzi
+* [Michele Bruno](https://github.com/michelebruno)
+* [Federica Laurencio](https://federicalaurencio.bss.design/)
+* [Valentina Pallacci](https://www.linkedin.com/in/valentina-pallacci/)
+* [Federico Pozzi](https://federicopozzi.github.io/portfolio/index.html)
 
 ### Table of Contents
 
