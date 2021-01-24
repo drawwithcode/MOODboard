@@ -387,6 +387,8 @@ In order to organize the structure of the webpage we used this css framework tha
 In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and
 **dimension** of texts.
 
+![Rotation](readme/button.jpg)
+
 To style the interaction buttons to start the game, a **rotation animation** in css was used.
 
 ```css
@@ -400,9 +402,45 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 }
 ```
 
+![about](readme/about.gif)<br>
+
 Also the animations of the About and Save buttons are made in CSS.
 
-![about](readme/about.gif)<br>
+```
+bg-will-be-animated .bg-animation {
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  background-color: #FEBE43;
+  border-radius: 50%;
+  transform: scale(0);
+  z-index: -1;
+  transition: 1s;
+  transition-timing-function: cubic-bezier(0.13, 0, 0, 1);
+}
+
+.bg-will-be-animated:hover .bg-animation {
+  transform: scale(15);
+  transition: .6s;
+}
+
+.bg-will-be-animated:hover .cool-underlinedr::before
+{
+  visibility: visible;
+  width: 0;
+}
+.bg-will-be-animated .cool-underlinedr::before  {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -1px;
+  right: 0;
+  background-color: black;
+  transition: .6s ease-in-out;
+}
+```
 
 
 ### Sharingbutton.io
