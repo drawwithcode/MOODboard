@@ -1,4 +1,4 @@
-![Title](readme/tile.gif)<br>
+![Title](readme/title.gif)<br>
 
 # MOODboard
 
