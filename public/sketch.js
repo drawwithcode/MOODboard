@@ -30,7 +30,7 @@ const detectionOptions = new faceapi.TinyFaceDetectorOptions();
 const G = 100;
 
 /**
- * Palette delle emozioni
+ * Palette of color associated to each expression.
  *
  * @type {{string}}
  */
@@ -57,13 +57,6 @@ const summedFeelings = {
 const bg = new p5((sketck) => {
   sketck.setup = function() {
     sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
-  };
-
-  /**
-   * Chiamare questa funzione ovunque per il download dello screenshot (bg.takeScreenshot());
-   */
-  sketck.takeScreenshot = function() {
-    sketck.saveCanvas('MOODboard', 'png');
   };
 
   sketck.windowResized = function() {
