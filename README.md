@@ -1,3 +1,5 @@
+![Title](readme/tile.gif)<br>
+
 # MOODboard
 
 **MOODboard** is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
@@ -61,7 +63,7 @@ We preferred to stick to **desktop or landscape mobile** because on portrait mob
 
 ### Face recognition
 
-The [face-api.js](https://justadudewhohacks.github.io/face-api.js/docs/index.html#models-face-expression-recognition) library was used for facial recognition.
+To draw the algorithmic representation of each user's expression we used **[face-api.js](https://justadudewhohacks.github.io/face-api.js/docs/index.html#models-face-expression-recognition)**, a JavaScript API for face detection. We chose to draw the expression with a **stroke** that changes colour according to the user's emotion. The facial features are contained within a **white circle** to ensure that the features were always recognisable and not lost in the texture of the background.
 
 #### Palette
 
@@ -73,25 +75,7 @@ Then we decided on a palette that resonated with the mood we envisioned for the 
 
 #### Algorithmic representation
 
-First, we gave shape to the landmarks by connecting them with a stroke.
-
-```js
-const col = palette[this.feeling];
-stroke(col);
-
-noFill();
-// rect(0, 0, this.dimensions.w, this.dimensions.h);
-strokeWeight(5);
-this._drawElement(this.leftEyebrow, false);
-this._drawElement(this.rightEyebrow, false);
-this._drawElement(this.nose, false);
-this._drawElement(this.leftEye);
-this._drawElement(this.rightEye);
-this._drawElement(this.mouth);
-noStroke();
-```
-
-A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture. To stay in line with our sketchy visual identity, we used `noise()` function.
+A **white background** was then applied to each avatar. To stay in line with our sketchy visual identity, we used `noise()` function.
 
 ```js
 class Player {
@@ -119,6 +103,24 @@ class Player {
     pop();
   }
 }
+```
+
+We gave shape to the landmarks by connecting them with a stroke.
+
+```js
+const col = palette[this.feeling];
+stroke(col);
+
+noFill();
+// rect(0, 0, this.dimensions.w, this.dimensions.h);
+strokeWeight(5);
+this._drawElement(this.leftEyebrow, false);
+this._drawElement(this.rightEyebrow, false);
+this._drawElement(this.nose, false);
+this._drawElement(this.leftEye);
+this._drawElement(this.rightEye);
+this._drawElement(this.mouth);
+noStroke();
 ```
 
 When socket receives the data it assigns it to the corresponding player.
@@ -179,6 +181,8 @@ for (const feeling of feelings) {
   }
 }
 ```
+
+#### Position of the avatar
 
 The position of the avatar is calculated by the browser of each user, making the site faster. The position is calculated on the basis of gravity points that [apply forces to points](https://www.youtube.com/watch?v=MkXoQVWRDJs&ab_channel=TheCodingTrain) with the same feeling.
 
@@ -263,6 +267,30 @@ Set the position of the **centre of gravity**.
   }
 }
 ```
+
+#### Rooms
+
+We decided to divide the participants in **rooms** of 12 users, to avoid overloading the server and to keep the experience enjoyable.
+
+```
+**
+ * Limit of players per room.
+ *
+ * @type {number}
+ */
+const playersPerRoom = 12;
+
+const rooms = [];
+
+/**
+ * Checks if the rooms is full.
+ * @return {boolean}
+ */
+isRoomFull() {
+  return this.players.length >= playersPerRoom;
+}
+```
+
 
 ### Background
 
