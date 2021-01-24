@@ -379,6 +379,11 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 }
 ```
 
+button about and save 
+
+![about](readme/about.gif)<br>
+
+
 ### Sharingbutton.io
 
 To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates
