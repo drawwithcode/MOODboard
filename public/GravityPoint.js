@@ -1,7 +1,7 @@
 /**
  * Questa classe genera i centri di gravità delle emozioni.
  */
-class FeelingGravity {
+class GravityPoint {
   constructor({feeling}) {
     this.feeling = feeling;
     this.setPosition();
@@ -38,7 +38,7 @@ class FeelingGravity {
 
   draw() {
     push();
-    let col = color(palette[this.feeling]);
+    const col = color(palette[this.feeling]);
     fill(col);
     textAlign(CENTER);
     textSize(23);
@@ -52,7 +52,7 @@ class FeelingGravity {
    * Da richiamare al resize.
    */
   setPosition() {
-    let hUnit = height/8;
+    const hUnit = height/8;
 
     switch (this.feeling) {
       case 'neutral':
@@ -77,7 +77,7 @@ class FeelingGravity {
         this.pos = createVector(1 * width / 8, 5.5 * hUnit);
         break;
       default:
-        console.warn(this.feeling + " is not a valid expression.")
+        console.warn(this.feeling + ' is not a valid expression.');
         break;
     }
   }

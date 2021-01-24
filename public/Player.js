@@ -192,6 +192,7 @@ class Player {
     scale(1, 1.2);
 
     const noiseDivider = 3;
+
     beginShape();
     for (let i = 0; i < 15; i++) {
       const a = TWO_PI * i / 15;
@@ -201,17 +202,5 @@ class Player {
     }
     endShape(CLOSE);
     pop();
-
-    // for (var i = 0; i < points.length; i++) {
-
-    // const point = points[i];
-    //
-    // let mult = 1;
-    //       if (point._x < noseX) {
-    //         mult = -1
-    //       }
-    //       vertex(point._x + noise(i/10, frameCount/100) * 70 * mult, point._y + noise(i/10, frameCount/100))
-    //
-    //     }
   }
 }

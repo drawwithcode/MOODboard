@@ -406,12 +406,12 @@ p {
   transition: .6s ease-in-out;
 }
 
-.bg-will-be-animated:hover .cool-underlinedl::before
+.bg-will-be-animated:hover .cool-underlined::before
 {
   visibility: visible;
   width: 0;
 }
-.bg-will-be-animated .cool-underlinedl::before  {
+.bg-will-be-animated .cool-underlined::before  {
   content: "";
   position: absolute;
   width: 100%;

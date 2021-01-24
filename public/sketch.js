@@ -30,7 +30,7 @@ const detectionOptions = new faceapi.TinyFaceDetectorOptions();
 const G = 100;
 
 /**
- * Palette delle emozioni
+ * Palette of color associated to each expression.
  *
  * @type {{string}}
  */
@@ -59,13 +59,6 @@ const bg = new p5((sketck) => {
     sketck.createCanvas(sketck.windowWidth, sketck.windowHeight, WEBGL).parent('#backgroundP5');
   };
 
-  /**
-   * Chiamare questa funzione ovunque per il download dello screenshot (bg.takeScreenshot());
-   */
-  sketck.takeScreenshot = function() {
-    sketck.saveCanvas('MOODboard', 'png');
-  };
-
   sketck.windowResized = function() {
     sketck.resizeCanvas(sketck.windowWidth, sketck.windowHeight);
     bgShader.setUniform('resolution', [width, height]);
@@ -74,7 +67,7 @@ const bg = new p5((sketck) => {
 
 /**
  * These are the points in
- * @type {Map<string, FeelingGravity>}
+ * @type {Map<string, GravityPoint>}
  */
 const gravityPoints = new Map();
 
@@ -118,17 +111,8 @@ async function detectFace() {
     me.detection = detection;
 
     me.broadcast();
-
-    /**
-     * Mostriamo alcuni dati sull'espressione rilevata
-     *
-     * @todo cancellare quando non servirà
-     */
-    // textSize(20);
-    // text(me.feeling + ', ' + me.feelingValue.toFixed(3), video.width / 2,
-    //     video.height - 20);
   } else { // Nessuna rilevazione.
-    // DEBUG_MODE && console.warn('Invalid detection');
+    DEBUG_MODE && console.warn('Invalid detection');
   }
 
   return detectFace();
@@ -157,7 +141,7 @@ async function setup() {
 
   // Crea le istanze dei focus point
   for (const feeling of feelings) {
-    gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
+    gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
   }
 
   // Loads facepi models
@@ -172,6 +156,7 @@ async function setup() {
 
     start.disabled = false;
     start.classList.remove('disabled');
+
     DEBUG_MODE && console.debug('Video is ready.');
   });
 

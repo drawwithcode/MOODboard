@@ -1,29 +1,72 @@
-## Table of Contents
-1. [Project Idea](#project-idea)
-2. [Interaction](#interaction)
-3. [Key features](#key-features)
-4. [Miscellaneus](#miscellaneus)
-5. [Teams](#teams)
 
-## MOODboard
+# MOODboard
+MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano. <br>
+If you want to know more about it visit [this website](https://drawwithcode.github.io/2020/).
 
-MOODboard is a project built in p5.js for the course **Creative Coding** at the Politecnico di Milano.
+### Faculty
+* Michele Mauri
+* Andrea Benedetti
+* Tommaso Elli
 
-## Project Idea
+### Team
+* Michele Bruno
+* Federica Laurencio
+* Valentina Pallacci
+* Federico Pozzi
 
- The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+### Table of Contents
 
-## Interaction
+1. [Concept](#concept)
+   * Project idea
+   * Communication aim
+   * Context of use
+   * Device
 
- Users can see an **algorithmic representation** of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in **real-time**. Every user will be positioned according to their expression, creating **groups** based on shared emotion. The background will show a **generative artwork** that changes according to everyone's expression and the number of participants.
+2. [Design challenges](#Design-challenges)
+   * Face recognition
+     * Coding challenges
+   * Background
+     * Coding challenges
+
+3. [Miscellaneus](#miscellaneus)
+   * Heroku
+   * CSS
+   * Sharingbutton.io
+   * ES6 features
+   
+4. [Credits](#credits)
+
+## Concept
+
+### Project idea
+
+Users can see an algorithmic representation of their expression (neutral, happy, angry, sad, disgusted, surprised, fearful) that changes shape and color based on how they are feeling during that time. The representation is updated in real-time. Every user will be positioned according to their expression, creating groups based on shared emotion. The background will show a generative artwork that changes according to everyone's expression and the number of participants.
+
+### Communication aim
+The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+
+### Context of use
+
+### Device
+We preferred to stick to desktop or landscape mobile because on portrait mobile the space was not enough for the experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io we used other libraries to achieve our goals, in particular face-api.js.
+
 
 ## Design challenges
 
-### Algorithmic representation
+### Face recognition
 
-First, we gave shape to the landmarks by connecting them with a stroke.
+The face-api.js library was used for facial recognition. 
+
+#### Palette
 Then we decided on a palette that resonated with the mood we envisioned for the project, while also trying to use colors that were commonly coded with the emotions used.
 
+![Palette](readme/palettemoodboard.png)<br>
+
+### Coding challenges
+
+#### Algorithmic representation
+
+First, we gave shape to the landmarks by connecting them with a stroke.
 ```
 const col = palette[this.feeling];
 stroke(col);
@@ -39,12 +82,36 @@ this._drawElement(this.rightEye);
 this._drawElement(this.mouth);
 noStroke();
 ```
-####Palette
-![Palette](readme/palettemoodboard.png)<br>
 
+A **white background** was then applied to each avatar to ensure that the features were always recognisable and did not get lost in the background texture.
 
-####Coding
+```
+drawPotato() {
+ // const points = this.jaw;
 
+ const larg = this.dimensions.w;
+ const alt = this.dimensions.h;
+
+ push();
+ noStroke();
+ /**
+  * alt/2.5 for centring the face
+  */
+ translate(larg / 2, alt / 2.5);
+ scale(1, 1.2);
+
+ const noiseDivider = 3;
+ beginShape();
+ for (let i = 0; i < 15; i++) {
+   const a = TWO_PI * i / 15;
+   const noiseX = (noise(a, frameCount / 20) - .5) / noiseDivider;
+   const noiseY = (noise(a, frameCount / 20) - .5) / noiseDivider;
+   vertex((cos(a) + noiseX) * larg / 2, (sin(a) + noiseY) * alt / 2);
+ }
+ endShape(CLOSE);
+ pop();
+
+```
 
 When socket receives the data it assigns it to the corresponding player.
 
@@ -105,7 +172,7 @@ The position of the avatar is calculated by the browser of each user, making the
 This class generates the **centres of gravity** of the emotions.
 
 ```
-class FeelingGravity {
+class GravityPoint {
   constructor({feeling}) {
     this.feeling = feeling;
     this.setPosition();
@@ -186,7 +253,7 @@ Set the position of the **centre of gravity**.
 
 For the background, we decided very early in development that we wanted to design a **responsive generative artwork**. The artwork needed to further the connection between the users and their algorithmic representation. In order to achieve this result, we decided that we needed to show the **sum of the emotions** of every person in the room at any given time.
 
-#### Coding
+#### Coding challenges
 
 After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on openprocessing.org. The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in GLSL, a language that allows complex results with little computational load.
 In order to understand GLSL, we used The book of shaders and GLSL Sandbox.
@@ -198,10 +265,6 @@ Using the data from Face.api we created **seven uniforms** connected with each e
 The stripes are then animated with a **parametric equation**.
 
 ```
-#ifdef GL_ES
-precision mediump float;
-#endif
-
 uniform float time;
 uniform vec2 resolution;
 
@@ -212,8 +275,6 @@ uniform float angry;
 uniform float fearful;
 uniform float disgusted;
 uniform float surprised;
-
-#define RGB(r, g, b) vec3(r / 255.0, g / 255.0, b / 255.0)
 
 const vec3 YELLOW = RGB(254.0, 190.0, 67.0);
 const vec3 PINK = RGB(239.0, 108.0, 148.0);
@@ -237,14 +298,11 @@ vec3 band(vec2 pos) {
 }
 
 void main() {
-
-  //vec2 position = ( gl_FragCoord.xy / resolution.xy );
   vec2 position = (gl_FragCoord.xy / resolution.xy * 1.5) - vec2(0.0, 2.7);
   float X = position.x*20.;
   float Y = position.y*20.;
   float t = time*0.6;
   float o = sin(+cos(t+X/1.)+t+Y/6.-sin(X/(5.+cos(t*.1)-sin(X/10.+Y/10.))));
-  //gl_FragColor = vec4( hsv2rgb(vec3( o*2, 1., .5)), 1. );
 
   gl_FragColor = vec4(band(position + vec2(0., cos(position.x*4. + o + time))), 4.0);
 }
@@ -270,7 +328,10 @@ setInterval(function() {
  summedFeelings.next = nextFeelings;
  summedFeelings.lastTimestamp = Date.now();
 }, summedFeelings.interval);
+```
+In the p5 `draw()` function, the interpolated values are set to the shader with the `setUniform()` function.
 
+```
  const {prev, next, lastTimestamp, interval} = summedFeelings;
  if (prev && next) {
    bg.shader(bgShader);
@@ -288,9 +349,7 @@ setInterval(function() {
 The user also has the option of **saving** the background.
 
 ```
-  sketck.takeScreenshot = function() {
-    sketck.saveCanvas('MOODboard', 'png');
-  };
+<button class="menu btn btn-text p-0 cool-underlined" onclick="bg.saveCanvas('MOODboard', 'png')">Save</button>
 ```
 
 ## Miscellaneus
@@ -318,8 +377,8 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 
 ### Sharingbutton.io
 
-To create the **sharing button** for the social, this online tool was used which generates html and css strings to be embedded in the website.
-
+To create the **sharing button** for the social, we used an [online tool](https://sharethis.com/it/) which generates
+HTML and CSS strings to be embedded in the website.
 ```
 <!-- Sharingbutton WhatsApp -->
 <a class="resp-sharing-button__link" href="whatsapp://send?text=I&#x27;m%20inviting%20you%20to%20my%20shared%20emotions!%20https%3A%2F%2Fffmv-moodboard.herokuapp.com%2F" target="_blank" rel="noopener" aria-label="">
@@ -328,164 +387,13 @@ To create the **sharing button** for the social, this online tool was used which
  </div>
  </div>
 </a>
-
-
-.resp-sharing-button__link,
-.resp-sharing-button__icon {
- display: inline-block
-}
-
-.resp-sharing-button__link {
- text-decoration: none;
- color: #fff;
- margin: 0.5em
-}
-
-.resp-sharing-button {
- border-radius: 5px;
- transition: 25ms ease-out;
- padding: 0.5em 0.75em;
- font-family: Helvetica Neue,Helvetica,Arial,sans-serif
-}
-
-.resp-sharing-button__icon svg {
- width: 1em;
- height: 1em;
- margin-right: 0.4em;
- vertical-align: top
-}
-
-.resp-sharing-button--small svg {
- margin: 0;
- vertical-align: middle
-}
-
-/* Non solid icons get a stroke */
-.resp-sharing-button__icon {
- stroke: #fff;
- fill: none
-}
-
-/* Solid icons get a fill */
-.resp-sharing-button__icon--solid,
-.resp-sharing-button__icon--solidcircle {
- fill: #fff;
- stroke: none
-}
-
-.resp-sharing-button--twitter {
- background-color: #55acee
-}
-
-.resp-sharing-button--twitter:hover {
- background-color: #2795e9
-}
-
-.resp-sharing-button--pinterest {
- background-color: #bd081c
-}
-
-.resp-sharing-button--pinterest:hover {
- background-color: #8c0615
-}
-
-.resp-sharing-button--facebook {
- background-color: #3b5998
-}
-
-.resp-sharing-button--facebook:hover {
- background-color: #2d4373
-}
-
-.resp-sharing-button--tumblr {
- background-color: #35465C
-}
-
-.resp-sharing-button--tumblr:hover {
- background-color: #222d3c
-}
-
-.resp-sharing-button--reddit {
- background-color: #5f99cf
-}
-
-.resp-sharing-button--reddit:hover {
- background-color: #3a80c1
-}
-
-.resp-sharing-button--google {
- background-color: #dd4b39
-}
-
-.resp-sharing-button--google:hover {
- background-color: #c23321
-}
-
-.resp-sharing-button--linkedin {
- background-color: #0077b5
-}
-
-.resp-sharing-button--linkedin:hover {
- background-color: #046293
-}
-
-.resp-sharing-button--email {
- background-color: #777
-}
-
-.resp-sharing-button--email:hover {
- background-color: #5e5e5e
-}
-
-.resp-sharing-button--xing {
- background-color: #1a7576
-}
-
-.resp-sharing-button--xing:hover {
- background-color: #114c4c
-}
-
-.resp-sharing-button--whatsapp {
- background-color: #25D366
-}
-
-.resp-sharing-button--whatsapp:hover {
- background-color: #1da851
-}
-
-.resp-sharing-button--hackernews {
- background-color: #FF6600
-}
-.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
-
-.resp-sharing-button--vk {
- background-color: #507299
-}
-
-.resp-sharing-button--vk:hover {
- background-color: #43648c
-}
-
-.resp-sharing-button--whatsapp {
- background-color: #25D366;
- border-color: #25D366;
-}
-
-.resp-sharing-button--whatsapp:hover,
-.resp-sharing-button--whatsapp:active {
- background-color: #1DA851;
- border-color: #1DA851;
-}
-
-.resp-sharing-button--telegram {
- background-color: #54A9EB;
-}
-
-.resp-sharing-button--telegram:hover {
- background-color: #4B97D1;}
 ```
 
-### New java features
+The user will have a custom default message to invite his/her friends.
+
+![Telegram image](readme/telegram.jpg)
+
+### ES6 features
 
 #### Map
 The [Map object](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map) is a simple key/value map. It allows variables to be assigned a value, for example the socked.id of the players.
@@ -505,15 +413,14 @@ const player = players.get(id);
 
 ```
 for (const feeling of feelings) {
- gravityPoints.set(feeling, new FeelingGravity({feeling: feeling}));
+ gravityPoints.set(feeling, new GravityPoint({feeling: feeling}));
 }
 ```
 
+## Credits
 
-## Team
-
-MOODboard was developed by:
-Michele Bruno, Federica Laurencio, Valentina Pallacci, Federico Pozzi
+Font: Karrik
+Libraries: P5js
 
 
 ## How to run
