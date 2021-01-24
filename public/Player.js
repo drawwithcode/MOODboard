@@ -64,7 +64,7 @@ class Player {
 
     noFill();
 
-    strokeWeight(5);
+    strokeWeight(3 / ratio);
     this._drawElement(this.leftEyebrow, false);
     this._drawElement(this.rightEyebrow, false);
     this._drawElement(this.nose, false);
