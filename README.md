@@ -48,9 +48,10 @@ Users can see an **algorithmic representation** of their expression (neutral, ha
 
 ### Communication aim
 
-The main goal was to create an **interactive experience** where users can reconnect with their peers and other anonymous surfers through their emotions, to enable speculation around the theme of **sentient algorithms**.
+The project was created with the aim of encouraging the user to reflect on the theme of **algorithmic emotions**. The main goal is to activate a speculation on the fact that a computer can actually recognise and replicate a human emotion.
 
 ### Context of use
+This digital experience aims to be used by users in order to **reconnect with their peers** and other anonymous surfers through their emotions. Thus enabling them to share and re-connect with each other.
 
 ### Device
 
