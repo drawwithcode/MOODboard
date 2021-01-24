@@ -33,7 +33,7 @@ class Player {
   }
 
   draw() {
-    // Se non c'è ancora un feeling associato, non disegnare.
+    // Returns if there is no feeling yet. It may happen with the me player.
     if (!this.feeling) {
       return;
     }
@@ -42,19 +42,21 @@ class Player {
 
     translate(this.pos);
 
+
+    push();
+
+    const faceWidth = 120;
+
+    const ratio = faceWidth / this.dimensions.w;
+    scale(
+        ratio,
+    );
     translate(-this.dimensions.w / 2, -this.dimensions.h / 2);
+
 
     const col = palette[this.feeling];
 
     stroke(col);
-
-    const faceWidth = 120;
-
-    scale(
-        faceWidth / this.dimensions.w,
-        faceWidth / this.dimensions.w,
-    );
-
     fill('white');
     push();
     this.drawPotato();
@@ -72,11 +74,13 @@ class Player {
     noStroke();
 
     if (this.id === socket.id) {
-      fill(palette['neutral']);
+      fill(color('#474747'));
       textAlign(CENTER);
-      textSize(30);
-      text('YOU', this.dimensions.w / 2, this.dimensions.h + 40);
+      textSize(25/ ratio);
+      text('You', this.dimensions.w / 2, this.dimensions.h + 25 / ratio);
     }
+    pop();
+
 
     pop();
   }
