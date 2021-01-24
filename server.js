@@ -157,7 +157,7 @@ class Room {
       console.debug('Player was not in this room.');
     }
 
-    this.emit('player.left', socket.id);
+    this.emit('player.left', player.id);
   }
 
   /**
