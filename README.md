@@ -16,7 +16,7 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
 
 ### Table of Contents
 
-1. [Concept](#project-idea)
+1. [Concept](#concept)
    * Project idea
    * Communication aim
    * Context of use
@@ -29,6 +29,11 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
      * Coding challenges
 
 3. [Miscellaneus](#miscellaneus)
+   * Heroku
+   * CSS
+   * Sharingbutton.io
+   * ES6 features
+   
 4. [Credits](#credits)
 
 ## Concept
