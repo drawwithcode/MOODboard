@@ -56,7 +56,6 @@ function onPlayerLeft(id) {
 }
 ```
 
-
 Detect performs facial recognition.
 ```
 async function detectFace() {
@@ -296,7 +295,7 @@ The user also has the option of **saving** the background.
 
 ## Miscellaneus
 
-###Heroku
+### Heroku
 
 The perfect server turned out to be heroku as it allows you to have a working server directly connected to the github repository facilitating the work and development of the web app.
 
@@ -486,9 +485,9 @@ To create the **sharing button** for the social, this online tool was used which
  background-color: #4B97D1;}
 ```
 
-###New java features
+### New java features
 
-####Map
+#### Map
 The [Map object](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map) is a simple key/value map. It allows variables to be assigned a value, for example the socked.id of the players.
 
 ```
@@ -501,7 +500,7 @@ if (!players.has(id)) {
 const player = players.get(id);
 ```
 
-####For...of
+#### For...of
 [For...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) was used to improve the readability.
 
 ```
