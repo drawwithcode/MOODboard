@@ -1,16 +1,20 @@
 // load express library
 const express = require('express');
 const {v4: uuid} = require('uuid');
+
 // create the app
 const app = express();
+
 // define the port where client files will be provided
 const port = process.env.PORT || 3000;
 // start to listen to that port
 const server = app.listen(port);
+
 // provide static access to the files
 // in the "public" folder
 app.use(express.static('public'));
 app.use('/face-api', express.static(__dirname + '/node_modules/face-api.js/dist/'));
+
 // load socket library
 const socket = require('socket.io');
 
@@ -19,14 +23,15 @@ const io = socket(server);
 
 // define which function should be called
 // when a new connection is opened from client
-io.on('connection', newConnection);
+io.on('connection', onConnection);
+
 // callback function: the paramenter (in this case socket)
 // will contain all the information on the new connection
-function newConnection(socket) {
+function onConnection(socket) {
   const room = getRoom(socket);
 
   // when a new connection is created, print its id
-  console.log('New socket. Id: '+ socket.id + ' connected to room ' + room.id);
+  console.log('New socket. Id: ' + socket.id + ' connected to room ' + room.id);
 
   socket.on('player.updated', function(...args) {
     socket.to(room.id).broadcast.emit('player.updated', socket.id, ...args);
@@ -34,21 +39,25 @@ function newConnection(socket) {
 
   socket.on('disconnect', function() {
     room.removePlayer(socket);
-
-    socket.to(room.id).broadcast.emit('player.left', socket.id);
   });
 }
 
 console.log('Server is running.\n' +
-    'Check out at http://localhost:' +
-    port +
-    '/ ');
+  'Check out at http://localhost:' +
+  port +
+  '/ ');
 
-const roomPlayers = 2;
+/**
+ * Limit of players per room.
+ *
+ * @type {number}
+ */
+const playersPerRoom = 2;
 
 const rooms = [];
 
 /**
+ * Retrieves a room for the player which automatically joins the room.
  *
  * @param {Socket} player
  * @return {Room}
@@ -93,13 +102,24 @@ class Room {
     return this.players.filter((p) => p.connected);
   }
 
+  /**
+   * Checks if the rooms is full.
+   * @return {boolean}
+   */
   isRoomFull() {
-    return this.players.length >= roomPlayers;
+    return this.players.length >= playersPerRoom;
   }
 
+  /**
+   * Checks if the player is already in the room.
+   *
+   * @param player
+   * @return {boolean}
+   */
   isPlayerIn(player) {
     return this.players.findIndex((p) => p.id === player.id) !== -1;
   }
+
   /**
    *
    * @param {string|int|Socket} player
@@ -122,17 +142,24 @@ class Room {
     return this.players.findIndex((p) => p.id === id);
   }
 
-
+  /**
+   * To be triggered when player leaves. Emits player.left event.
+   *
+   * @param {Socket} player
+   */
   removePlayer(player) {
     const index = this.getPlayerIndex(player);
 
     if (index > -1) {
       this.players = this.players.slice(index, 1);
-      console.debug('Player left.', 'Is room full?', this.isRoomFull() );
+      console.debug('Player left.', 'Is room full?', this.isRoomFull());
     } else {
       console.debug('Player was not in this room.');
     }
+
+    this.emit('player.left', socket.id);
   }
+
   /**
    *
    * @param {Socket} player
