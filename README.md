@@ -24,7 +24,7 @@ If you want to know more about it visit [this website](https://drawwithcode.gith
   * Context of use
   * Device
 
-2. [Design challenges](#Design-challenges)
+2. [Design and coding challenges](#Design-and-coding-challenges)
   * Face recognition
     * Coding challenges
   * Background
@@ -63,7 +63,7 @@ We preferred to stick to desktop or landscape mobile because on portrait mobile 
 experience. Besides the main frameworks and languages as HTML, CSS, p5.js, and socket.io, we used other libraries to
 achieve our goals, in particular [face-api.js](https://github.com/justadudewhohacks/face-api.js/).
 
-## Design challenges
+## Design and coding challenges
 
 ### Face recognition
 
@@ -286,7 +286,7 @@ time.
 
 #### Coding challenges
 
-After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on openprocessing.org.
+After exploring the possibilities of p5.js in this scenario, we landed on an interesting project on [openprocessing.org](https://www.openprocessing.org/).
 The sketch seemed really fluid for a p5js project. In fact, we discovered that the main design was a **shader** coded in
 GLSL, a language that allows complex results with little computational load. In order to understand GLSL, we used The
 book of shaders and GLSL Sandbox. On GLSL Sandbox we found some shaders that had snippets that allowed us to get closer
