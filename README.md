@@ -387,7 +387,7 @@ In order to organize the structure of the webpage we used this css framework tha
 In order to arrange the commands inside the canvas in html, bootstrap and pure css were used. Also for **colors** and
 **dimension** of texts.
 
-![Rotation](readme/button.jpg)
+![Rotation](readme/button.gif)
 
 To style the interaction buttons to start the game, a **rotation animation** in css was used.
 
@@ -402,7 +402,7 @@ To style the interaction buttons to start the game, a **rotation animation** in 
 }
 ```
 
-![about](readme/about.gif)<br>
+![about](readme/about.gif)
 
 Also the animations of the About and Save buttons are made in CSS.
 
